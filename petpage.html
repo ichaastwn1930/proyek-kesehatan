@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuyu Pet - Chance's Collections</title>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="petpage-styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- AWAN ATAS (TETAP DIAMANKAN) -->
+        <img src="awankanan.png" alt="Awan Kanan Atas" class="awan-top-pet-right">
+
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- AREA SCROLL CONTENT TENGAH (SUDAH AKTIF BISA DI-SCROLL KE BAWAH) -->
+        <div class="pet-scroll-content">
+            
+            <!-- 1. KARTU BIODATA PET (YUKI) -->
+                      <!-- ======================================================== -->
+            <!-- 1. KARTU BIODATA PET INTERAKTIF (VERSI UPDATE EDIT)      -->
+            <!-- ======================================================== -->
+            <div class="pet-biodata-card-wrapper">
+                
+                <!-- TOMBOL BACK DI KIRI ATAS SEBELUM KARTU -->
+                <div class="pet-top-navigation-row">
+                    <a href="home.html" class="back-btn-link-pet">👈</a>
+                </div>
+
+                <div class="pet-biodata-card">
+                    <!-- Avatar Kucing yang Bisa Diklik Ganti Foto Lewat Tombol Edit -->
+                    <div class="pet-avatar-purple-box">
+                        <img src="kucing1.png" alt="Yuki Cat" id="fotoAvatarPetAsli">
+                    </div>
+                    
+                    <div class="pet-info-details">
+                        <div class="title-row-cam">
+                            <!-- ID Nama Kita Pasang agar Bisa Diubah Secara JavaScript -->
+                            <h3 id="namaPetAsli">Yuki</h3>
+                            
+                            <!-- GANTI KAMERA JADI TOMBOL EDIT PRESTISIUS -->
+                            <button class="edit-profile-pet-btn" onclick="pemicuEditBiodataPet(); return false;">Edit</button>
+                        </div>
+                        <p class="gender-tag">She/Her</p>
+                        
+                        <div class="stats-grid-row">
+                            <div class="stat-lbl">Age:</div><div class="stat-val">5 Months</div>
+                            <div class="stat-lbl">Statues:</div><div class="stat-val">Friend</div>
+                            <div class="stat-lbl">Friend Code:</div><div class="stat-val">11-005-888-19</div>
+                        </div>
+                        
+                        <div class="size-footer-badges">
+                            <span>20.0g</span>
+                            <span>7.0cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input File Tersembunyi Khusus untuk Mengganti Foto Profil Kucing -->
+            <input type="file" id="inputFotoPetJalurBelakang" accept="image/*" style="display: none;" onchange="prosesGantiFotoAvatarPet(this)">
+
+
+            <!-- 2. KARTU EMBLEM 30 DAYS STREAK -->
+            <div class="streak-glass-badge">
+                <div class="check-hex-icon">
+                    <div class="inner-hex">✓</div>
+                </div>
+                <div class="streak-text-info">
+                    <h4><span>30</span> Days Streak</h4>
+                    <p>Longest self-care Streak ever!!</p>
+                </div>
+            </div>
+
+            <!-- 3. AREA NOTEPAD MEMORI (CHANCE'S COLLECTIONS) -->
+            <div class="notepad-container-card">
+                <!-- 3 Cincin Ring Spiral Cokelat Notepad -->
+                <div class="notepad-rings-row">
+                    <span class="ring-spiral"></span>
+                    <span class="ring-spiral"></span>
+                    <span class="ring-spiral"></span>
+                </div>
+                
+                <h3 class="notepad-main-title">Chance's Collections</h3>
+                
+                <!-- GRID UTAMA GALERI POLAROID (AKAN BERTAMBAH SENDIRI SECARA OTOMATIS) -->
+                <div class="polaroid-photos-grid" id="galeriPolaroidGrid">
+                    
+                    <!-- AREA SLOT DINAMIS JAVASCRIPT -->
+                    
+                    <!-- TOMBOL TAMBAH MEMORI (+) YANG AKAN SELALU BERADA DI POSISI AKHIR GRID -->
+                    <div class="polaroid-item-box btn-add-polaroid-kustom" id="tombolTambahMaster" onclick="pemicuUploadMemoriBaru()">
+                        <div class="polaroid-white-space space-plus-kustom">
+                            <span class="plus-add-icon-huge">➕</span>
+                        </div>
+                        <h5 class="photo-caption" style="color: #b388ff !important; font-weight:700;">Add Memory</h5>
+                        <p class="photo-date-lbl">Tap to create</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Input File Tersembunyi untuk Memilih Gambar dari Laptop -->
+         <input type="file" id="polaroidFileInput" accept="image/*" style="display: none;" onchange="prosesGambarSetelahPilih(this)">
+
+    </div> <!-- Penutup phone-screen -->
+
+
+
+        <!-- ======================================================== -->
+        <!-- URUTAN POP-UP 1, 2, 3 BERBARIS RAPI SEBELUM MASUK JS     -->
+        <!-- ======================================================== -->
+        
+        <!-- Pop-Up 1: Lembar Binder Notepad Kustom untuk Tulis Cerita -->
+        <div id="notepadModalKustom" class="notepad-modal-overlay" style="display: none;">
+            <div class="notepad-modal-body">
+                <div class="notepad-modal-header">
+                    <button class="btn-cancel-note" onclick="tutupNotepadModal(); return false;">Cancel</button>
+                    <h4 class="notepad-modal-title">Write Memory</h4>
+                    <button class="btn-save-note" onclick="simpanDataNotepadKeArray(); return false;">Save</button>
+                </div>
+                <div class="notepad-modal-content-form">
+                    <div class="input-note-group">
+                        <label>Memory Title</label>
+                        <input type="text" id="inputJudulMemori" placeholder="E.g., Walking with Yuki...">
+                    </div>
+                    <div class="input-note-group">
+                        <label>Date</label>
+                        <input type="date" id="inputTanggalMemori" class="kustom-calendar-picker">
+                    </div>
+                    <div class="input-note-group">
+                        <label>Your Story (100-200 words)</label>
+                        <textarea id="inputCeritaMemori" rows="5" placeholder="Write your memorable story here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+               <!-- ======================================================== -->
+        <!-- POP-UP 2: KONFIRMASI TANYA HAPUS KUSTOM (VERSI REKUES FUYU) -->
+        <!-- ======================================================== -->
+        <div id="modalKonfirmasiHapus" class="fuyu-alert-overlay" style="display: none;">
+            <div class="fuyu-alert-box" style="border-radius: 28px;">
+                <div class="fuyu-alert-body" style="padding: 28px 20px 20px 20px;">
+                    <span class="fuyu-alert-icon">😿</span>
+                    <h4 class="fuyu-alert-sender">Let It Go?</h4>
+                    <!-- Kalimat tanya kustom pilihanmu -->
+                    <p class="fuyu-alert-message" style="font-style: normal;">Apakah kamu yakin ingin menghapus memori ini?</p>
+                </div>
+                <div class="fuyu-dual-buttons-row">
+                    <!-- Tombol pilihan interaktif sesuai rekuesmu -->
+                    <button class="btn-alert-action btn-batal-kustom" onclick="tutupKonfirmasiHapusKustom(); return false;">Nanti dulu deh</button>
+                    <button class="btn-alert-action btn-relakan-kustom" onclick="eksekusiHapusDataMemori(); return false;">Yakin</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- POP-UP 3: NOTEPAD PREVIEW BERSIH + TOMBOL DELETE DI KANAN BAWAH -->
+        <!-- ======================================================== -->
+        <div id="alertHapusKustom" class="fuyu-alert-overlay" style="display: none;">
+            <div class="notepad-modal-body" style="width: 85%; position: relative;">
+                <div class="notepad-modal-header" style="background: #e8dbff;">
+                    <h4 class="notepad-modal-title" id="bacaJudulMemori" style="color: #43006B;">Memory Title</h4>
+                    <button class="btn-save-note" onclick="tutupAlertHapusKustom(); return false;" style="color: #43006B;">Close</button>
+                </div>
+                <div class="notepad-modal-content-form" style="padding: 20px; background: #ffffff; min-height: 160px; position: relative;">
+                    <p id="bacaTanggalMemori" style="font-size: 11px; color: #b388ff; font-weight: 700; margin: 0; text-align: left;"></p>
+                    <div style="border-top: 1px dashed rgba(235, 215, 255, 0.6); margin: 5px 0;"></div>
+                    <p id="bacaTeksCerita" style="font-size: 12px; color: #43006B; line-height: 1.6; margin: 5px 0 40px 0; white-space: pre-wrap; word-break: break-word; text-align: left;"></p>
+                    
+                    <!-- TOMBOL DELETE SEIRAMA KOTAK BIRU KAMU (DITARUH DI POJOK KANAN BAWAH NOTEPAD) -->
+                    <button class="btn-delete-notepad-preview" onclick="pemicuTombolHapusDariPreview(); return false;" title="Hapus memori ini">🗑️ Delete</button>
+                </div>
+            </div>
+        </div>
+
+                <!-- ======================================================== -->
+        <!-- URUTAN POP-UP 1, 2, 3 BERBARIS RAPI SEBELUM MASUK JS     -->
+        <!-- ======================================================== -->
+        
+        <!-- 1. POP-UP TAMBAHAN BARU A: EDIT NAMA PET NOTEPAD -->
+        <div id="modalEditNamaPet" class="notepad-modal-overlay" style="display: none;">
+            <div class="notepad-modal-body">
+                <div class="notepad-modal-header" style="background: #e8dbff;">
+                    <button class="btn-cancel-note" onclick="tutupModalEditNama(); return false;">Cancel</button>
+                    <h4 class="notepad-modal-title" style="color: #43006B;">Edit Pet Name</h4>
+                    <button class="btn-save-note" onclick="simpanNamaLanjutPilihSkin(); return false;" style="color: #43006B;">Next</button>
+                </div>
+                <div class="notepad-modal-content-form" style="padding: 20px; background: #ffffff;">
+                    <div class="input-note-group">
+                        <label>New Pet Name</label>
+                        <input type="text" id="inputNamaPetKustom" placeholder="E.g., Yuki, Chifuyu, Kuro...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. POP-UP TAMBAHAN BARU B: GRID MULTIPLE SELEKSI SKIN TEMPLATE -->
+        <div id="modalPilihSkinPet" class="notepad-modal-overlay" style="display: none;">
+            <div class="notepad-modal-body" style="width: 88%;">
+                <div class="notepad-modal-header" style="background: #fffee4;">
+                    <button class="btn-cancel-note" onclick="tutupModalPilihSkin(); return false;">Back</button>
+                    <h4 class="notepad-modal-title">Choose Pet Skin</h4>
+                    <span style="font-size: 10px; color: #b388ff; font-weight: 700;">6 Slots</span>
+                </div>
+                <div class="notepad-modal-content-form" style="padding: 16px; background: #ffffff; max-height: 400px; overflow-y: auto;">
+                    <div class="fuyu-skin-pet-grid">
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucing1.png')">
+                            <div class="skin-preview-box"><img src="kucing1.png" alt="Skin 1"></div>
+                            <p class="skin-lbl-name">Default Yuki</p>
+                        </div>
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucingceria.png')">
+                            <div class="skin-preview-box"><img src="kucingceria.png" alt="Skin 2"></div>
+                            <p class="skin-lbl-name">Happy Yuki</p>
+                        </div>
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucingstres.png')">
+                            <div class="skin-preview-box"><img src="kucingstres.png" alt="Skin 3"></div>
+                            <p class="skin-lbl-name">Stressed Yuki</p>
+                        </div>
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucingbobo.png')">
+                            <div class="skin-preview-box"><img src="kucingbobo.png" alt="Skin 4"></div>
+                            <p class="skin-lbl-name">Sleeping Yuki</p>
+                        </div>
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucingmain.png')">
+                            <div class="skin-preview-box"><img src="kucingmain.png" alt="Skin 5"></div>
+                            <p class="skin-lbl-name">Playful Yuki</p>
+                        </div>
+                        <div class="skin-item-card" onclick="eksekusiGantiSkinAsli('kucingkaget.png')">
+                            <div class="skin-preview-box"><img src="kucingkaget.png" alt="Skin 6"></div>
+                            <p class="skin-lbl-name">Shocked Yuki</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pop-Up Jurnal Lama Kamu (Utuh Di Bawahnya) -->
+        <div id="notepadModalKustom" class="notepad-modal-overlay" style="display: none;">
+
+
+        <!-- ======================================================== -->
+    <!-- JAVASCRIPT BARU: DENGAN 5 KOTAK AWAL + 1 TOMBOL TAMBAH   -->
+    <!-- ======================================================== -->
+    <script>
+               var daftarMemoriFuyu = [];
+        var targetSlotIndex = null;
+        var dataGambarSementara = "";
+        var indeksHapusSementara = null;
+
+        // A. Fungsi pemicu klik input file gambar kustom
+        function pemicuUploadMemoriBaru(indeks) {
+            targetSlotIndex = indeks;
+            document.getElementById('polaroidFileInput').click();
+        }
+
+        // B. Fungsi memproses file gambar lalu otomatis MEMBUKA MODAL NOTEPAD UNTUK MENGETIK
+        function prosesGambarSetelahPilih(input) {
+            if (input.files && input.files[0] && targetSlotIndex !== null) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    dataGambarSementara = e.target.result;
+                    
+                    // Bersihkan formulir isi note baru agar kosong siap diketik dari nol
+                    document.getElementById('inputJudulMemori').value = "";
+                    document.getElementById('inputTanggalMemori').value = "";
+                    document.getElementById('inputCeritaMemori').value = "";
+                    
+                    // SIHIR UI/UX: Munculkan lembar Notepad kustom di dalam HP untuk mengetik cerita!
+                    document.getElementById('notepadModalKustom').style.display = 'flex';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // C. FUNGSI KLIK TOMBOL SAVE DI POJOK KANAN NOTEPAD KUSTOM
+        function simpanDataNotepadKeArray() {
+            var inputJdl = document.getElementById('inputJudulMemori').value.trim();
+            var rawDate = document.getElementById('inputTanggalMemori').value; 
+            var inputCrt = document.getElementById('inputCeritaMemori').value.trim();
+
+            if (inputJdl === "") inputJdl = "Your memories";
+            if (inputCrt === "") inputCrt = "No stories recorded yet.";
+            
+            // Format ulang YYYY-MM-DD kalender jadi DD/MM/YY agar pas di polaroid
+            var inputTgl = "--/--/--";
+            if (rawDate) {
+                var parts = rawDate.split('-');
+                if (parts.length === 3) {
+                    inputTgl = parts[2] + "/" + parts[1] + "/" + parts[0].substring(2);
+                }
+            }
+
+            var targetIndex = (targetSlotIndex !== null) ? targetSlotIndex : daftarMemoriFuyu.length;
+
+            if (targetIndex < daftarMemoriFuyu.length) {
+                daftarMemoriFuyu[targetIndex] = {
+                    foto: dataGambarSementara,
+                    judul: inputJdl,
+                    tanggal: inputTgl,
+                    cerita: inputCrt, // Mengunci isian cerita pendek agar aman di database
+                    isPlaceholder: false
+                };
+            } else {
+                daftarMemoriFuyu.push({
+                    foto: dataGambarSementara,
+                    judul: inputJdl,
+                    tanggal: inputTgl,
+                    cerita: inputCrt,
+                    isPlaceholder: false
+                });
+            }
+
+            localStorage.setItem('fuyu_database_collections', JSON.stringify(daftarMemoriFuyu));
+            tutupNotepadModal();
+            renderUlangGaleriLayar();
+        }
+
+        // D. FUNGSI UTAMA RENDERING GRID LAYAR (5 SLOT AWAL + 1 TOMBOL TAMBAH MASTER)
+        function renderUrayGaleriLayar() {
+            // Alias penyeimbang fungsi
+            renderUlangGaleriLayar();
+        }
+
+        function renderUlangGaleriLayar() {
+            var wadahGrid = document.getElementById('galeriPolaroidGrid');
+            var tombolPlus = document.getElementById('tombolTambahMaster');
+            
+            if (!wadahGrid || !tombolPlus) return;
+            wadahGrid.innerHTML = "";
+
+            daftarMemoriFuyu.forEach(function(item, indeks) {
+                var kotakPolaroid = document.createElement('div');
+                kotakPolaroid.className = 'polaroid-item-box';
+                
+                if (item.isPlaceholder) {
+                    // Jika slot masih kosong, ketuk untuk memicu buka galeri file laptop kamu
+                    kotakPolaroid.onclick = function() { pemicuUploadMemoriBaru(indeks); };
+                    kotakPolaroid.innerHTML = `
+                        <div class="polaroid-white-space">
+                            <span class="plus-add-icon">＋</span>
+                        </div>
+                        <h5 class="photo-caption">${item.judul}</h5>
+                        <p class="photo-date-lbl">Date: ${item.tanggal}</p>
+                    `;
+                } else {
+                    // Jika slot sudah ada foto, ketuk sekali untuk MEMBACA cerita lama yang sudah diketik
+                    kotakPolaroid.onclick = function() { bukaDetailCeritaLama(indeks); };
+                    
+                    // Double Click memicu konfirmasi hapus kustom dalam HP
+                    kotakPolaroid.ondblclick = function(e) {
+                        e.stopPropagation(); 
+                        indeksHapusSementara = indeks;
+                        document.getElementById('modalKonfirmasiHapus').style.display = 'flex';
+                    };
+
+                    kotakPolaroid.innerHTML = `
+                        <div class="polaroid-white-space">
+                            <img src="${item.foto}" class="hidden-preview-img" style="display: block; width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h5 class="photo-caption">${item.judul}</h5>
+                        <p class="photo-date-lbl">Date: ${item.tanggal}</p>
+                    `;
+                }
+                wadahGrid.appendChild(kotakPolaroid);
+            });
+
+            tombolPlus.onclick = function() { pemicuUploadMemoriBaru(daftarMemoriFuyu.length); };
+            wadahGrid.appendChild(tombolPlus);
+        }
+
+        // E. FUNGSI MEMBUKA PREVIEW UNTUK MEMBACA CERITA JURNAL LAMA (ANTI-UNDEFINED)
+                function bukaDetailCeritaLama(indeks) {
+            var item = daftarMemoriFuyu[indeks];
+            if (item && !item.isPlaceholder) {
+                indeksHapusSementara = indeks; 
+                document.getElementById('bacaJudulMemori').innerText = item.judul;
+                document.getElementById('bacaTanggalMemori').innerText = "Date: " + item.tanggal;
+                
+                var ceritaTeks = item.cerita ? item.cerita : "No story recorded for this memory.";
+                document.getElementById('bacaTeksCerita').innerText = ceritaTeks;
+                
+                // PASTIKAN TOMBOL DELETE MUNCUL KEMBALI JIKA HANYA MEMBACA MEMO BIASA
+                var tombolDeleteDiNote = document.getElementById('alertHapusKustom').querySelector('.btn-delete-notepad-preview');
+                if (tombolDeleteDiNote) {
+                    tombolDeleteDiNote.style.display = 'flex';
+                }
+                
+                document.getElementById('alertHapusKustom').style.display = 'flex';
+            }
+        }
+
+
+        // Pemicu baru saat tombol "🗑️ Delete" di dalam note diketuk jari
+        function pemicuTombolHapusDariPreview() {
+            if (indeksHapusSementara !== null) {
+                // Sembunyikan dulu note preview agar tidak bertumpuk kaku
+                document.getElementById('alertHapusKustom').style.display = 'none';
+                
+                // Detik itu juga langsung luncurkan modal tanya kustom "Let It Go?" di HP!
+                document.getElementById('modalKonfirmasiHapus').style.display = 'flex';
+            }
+        }
+
+        // F. FUNGSI PENUTUP PANEL POP-UP OVERLAY
+        function tutupNotepadModal() { document.getElementById('notepadModalKustom').style.display = 'none'; document.getElementById('polaroidFileInput').value = ""; }
+        function tutupKonfirmasiHapusKustom() { document.getElementById('modalKonfirmasiHapus').style.display = 'none'; indeksHapusSementara = null; }
+        function tutupAlertHapusKustom() { document.getElementById('alertHapusKustom').style.display = 'none'; }
+
+        // G. EKSEKUSI HAPUS DATA MEMORI ASLI IN-APP
+                // ========================================================
+       
+        function eksekusiHapusDataMemori() {
+            if (indeksHapusSementara !== null) {
+                var indeks = indeksHapusSementara;
+                if (indeks < 5) {
+                    daftarMemoriFuyu[indeks] = { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true };
+                } else {
+                    daftarMemoriFuyu.splice(indeks, 1);
+                }
+                localStorage.setItem('fuyu_database_collections', JSON.stringify(daftarMemoriFuyu));
+                document.getElementById('modalKonfirmasiHapus').style.display = 'none';
+                indeksHapusSementara = null;
+
+                // Tampilkan pesan ucapan perpisahan syahdu di kotak kustom baru kamu
+                setTimeout(function() {
+                    document.getElementById('bacaJudulMemori').innerText = "🐾 Fuyu Say:";
+                    document.getElementById('bacaTanggalMemori').innerText = "System Message";
+                    document.getElementById('bacaTeksCerita').innerText = "Okay gapapa kamu hapus, ngga semua kejadian harus tetap dikenang...";
+                    
+                    // KUNCI CORES: Ambil tombol delete merah di kanan bawah, lalu kita sembunyikan paksa!
+                    var tombolDeleteDiNote = document.getElementById('alertHapusKustom').querySelector('.btn-delete-notepad-preview');
+                    if (tombolDeleteDiNote) {
+                        tombolDeleteDiNote.style.setProperty('display', 'none', 'important'); // Menyembunyikan paksa anti-gagal!
+                    }
+                    
+                    document.getElementById('alertHapusKustom').style.display = 'flex';
+                }, 200);
+            }
+        }
+
+        // Pastikan saat tombol Close diklik, sistem menyegarkan kembali tampilannya
+        function tutupAlertHapusKustom() {
+            document.getElementById('alertHapusKustom').style.display = 'none';
+            
+            // Kembalikan display tombol ke keadaan semula agar memo lain tidak ikut kehilangan tombol delete
+            var tombolDeleteDiNote = document.getElementById('alertHapusKustom').querySelector('.btn-delete-notepad-preview');
+            if (tombolDeleteDiNote) {
+                tombolDeleteDiNote.style.display = 'flex';
+            }
+            
+            renderUlangGaleriLayar(); // Segarkan barisan kartu foto polaroid kamu
+        }
+
+
+        // H. SINKRONISASI LOAD DATA AWAL DOMCONTENTLOADED
+        window.addEventListener('DOMContentLoaded', function() {
+            var dataTersimpan = localStorage.getItem('fuyu_database_collections');
+            if (dataTersimpan) {
+                daftarMemoriFuyu = JSON.parse(dataTersimpan);
+                
+                 daftarMemoriFuyu = daftarMemoriFuyu.map(function(item) {
+                    if(item.isPlaceholder === undefined) item.isPlaceholder = false;
+                    if(!item.cerita) item.cerita = "";
+                    return item;
+                });
+
+                if (daftarMemoriFuyu.length < 5) {
+                    while (daftarMemoriFuyu.length < 5) {
+                        daftarMemoriFuyu.push({ foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true });
+                    }
+                }
+            } else {
+                daftarMemoriFuyu = [
+                    { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true },
+                    { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true },
+                    { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true },
+                    { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true },
+                    { foto: "", judul: "Your memories", tanggal: "--/--/--", cerita: "", isPlaceholder: true }
+                ];
+            }
+            renderUlangGaleriLayar();
+        });
+                // ========================================================
+        // SIHIR JAVASCRIPT: LOGIKA EDIT NAMA & FOTO AVATAR PET FUYU
+        // ========================================================
+        
+            // ========================================================
+        // INDUK REVISI: ENGINE EDIT NAMA NOTEPAD & PILIH SKIN TEMPLATE IN-APP
+        // ========================================================
+        
+        // 1. Tombol Edit Utama diklik -> Buka Pop-up Notepad Nama Kustom
+        function pemicuEditBiodataPet() {
+            // Ambil nama aktif saat ini untuk ditaruh di dalam kolom kotak teks input
+            document.getElementById('inputNamaPetKustom').value = document.getElementById('namaPetAsli').innerText;
+            
+            // Luncurkan modal notepad kustom input nama di dalam HP
+            document.getElementById('modalEditNamaPet').style.display = 'flex';
+        }
+
+        // 2. Klik tombol "Next" di notepad nama -> Simpan nama sementara & luncurkan panel skin
+        function simpanNamaLanjutPilihSkin() {
+            var namaBaru = document.getElementById('inputNamaPetKustom').value.trim();
+            if (namaBaru === "") namaBaru = "Yuki";
+            
+            // Terapkan live ke teks profil dan amankan di database LocalStorage
+            document.getElementById('namaPetAsli').innerText = namaBaru;
+            localStorage.setItem('fuyu_nama_pet_kustom', namaBaru);
+            
+            // Sembunyikan modal nama kustom
+            document.getElementById('modalEditNamaPet').style.display = 'none';
+            
+            // SIHIR UI/UX: Langsung panggil mencuat panel 6 Grid Pilihan Ekspresi Kucing!
+            document.getElementById('modalPilihSkinPet').style.display = 'flex';
+        }
+
+        // 3. User memilih salah satu kartu gambar kucing di grid -> Terapkan skin live!
+        function eksekusiGantiSkinAsli(namaFileGambar) {
+            // Pasang gambarnya secara live ke avatar pet utama kamu
+            document.getElementById('fotoAvatarPetAsli').src = namaFileGambar;
+            localStorage.setItem('fuyu_foto_pet_kustom', namaFileGambar);
+            
+            // Tutup modal seleksi skin
+            tutupModalPilihSkin();
+        }
+
+        // Fungsi penutup tombol silang modal edit pet
+        function tutupModalEditNama() {
+            document.getElementById('modalEditNamaPet').style.display = 'none';
+        }
+        function tutupModalPilihSkin() {
+            document.getElementById('modalPilihSkinPet').style.display = 'none';
+        }
+
+        // 4. INTEGRASI AUTO-LOAD AGAR PILIHAN SKIN TERKUNCI SAAT PAGE RELOAD
+        window.addEventListener('DOMContentLoaded', function() {
+            var namaKustomTersimpan = localStorage.getItem('fuyu_nama_pet_kustom');
+            var fotoKustomTersimpan = localStorage.getItem('fuyu_foto_pet_kustom');
+            
+            if (namaKustomTersimpan) {
+                document.getElementById('namaPetAsli').innerText = namaKustomTersimpan;
+            }
+            if (fotoKustomTersimpan) {
+                document.getElementById('fotoAvatarPetAsli').src = fotoKustomTersimpan;
+            }
+        });
+
+
+    </script>
+
+</body>
+</html>

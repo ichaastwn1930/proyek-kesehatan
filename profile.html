@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Menu Utama - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS khusus menu profil -->
+    <link rel="stylesheet" href="profile.styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- AWAN BACKGROUND -->
+        <img src="awanbawah.png" alt="Awan Kanan" class="awan-top-profile flip-kanan">
+
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- HEADER TOP NAVIGATION -->
+        <div class="top-nav-profile">
+            <a href="home.html" class="back-btn-link">👈</a>
+            <h2 class="page-title">Profil</h2>
+        </div>
+
+        <!-- AREA KONTEN UTAMA MENU PROFIL (BISA DI-SCROLL HALUS) -->
+        <div class="profile-scroll-content">
+                       <!-- KARTU UTAMA DATA DIRI PROFIL (PENGUNCI ID SINKRONISASI NYATA) -->
+            <div class="profile-main-card">
+                <div class="avatar-frame-menu">
+                    <img src="profileicon.png" alt="Profile Image" id="displayMenuPhoto">
+                </div>
+                
+                <!-- KUNCI DI SINI: Pastikan tag pembuka <h3> utuh dan ID tertulis tepat displayMenuName -->
+                <h3 class="user-title-name" id="displayMenuName">Silakan Lengkapi Profil</h3>
+                
+                <!-- KUNCI DI SINI: Pastikan tag pembuka <p> utuh dan ID tertulis tepat displayMenuEmail -->
+                <p class="user-sub-email" id="displayMenuEmail">...</p>
+                
+                <a href="edit-profile.html" style="text-decoration: none;">
+                    <button class="btn-trigger-edit">Edit Profile</button>
+                </a>
+            </div>
+
+
+            
+            <!-- BARISAN LIST MENU PENGATURAN BARU SESUAI RENCANAMU -->
+            <div class="setting-menu-list">
+                <div class="setting-item-box" onclick="bukaPopupPengaturan('About App')">About App</div>
+                <div class="setting-item-box" onclick="bukaPopupPengaturan('Language')">Language</div>
+                <div class="setting-item-box" onclick="bukaPopupPengaturan('FAQ & Support')">FAQ & Support</div>
+                <div class="setting-item-box" onclick="bukaPopupPengaturan('Manage Data')">Manage Data</div>
+                <div class="setting-item-box" onclick="bukaPopupPengaturan('Application Security')">Application Security</div>
+            </div>
+<!-- ======================================================== -->
+<!-- SEKSI SOSIAL MEDIA: INSTAGRAM & X TWITTER (FIX FOTO REAL)-->
+<!-- ======================================================== -->
+<div class="fuyu-follow-us-section">
+    <h3>Ikuti kami</h3>
+    <div class="social-media-row">
+        
+        <!-- 1. Tombol Lingkaran Logo Instagram -->
+        <a href="https://instagram.com" target="_blank" class="social-circle-btn">
+            <!-- KUNCI 1: Mengubah src menjadi instagram.png sesuai file barumu -->
+            <img src="instagram.png" alt="Instagram" class="img-social-fuyu">
+        </a>
+
+        <!-- 2. Tombol Lingkaran Logo X (Twitter) -->
+        <a href="https://x.com" target="_blank" class="social-circle-btn">
+            <!-- KUNCI 2: Mengubah src menjadi twitter.png sesuai file barumu -->
+            <img src="twitter.png" alt="X Twitter" class="img-social-fuyu">
+        </a>
+
+    </div>
+</div>
+
+
+
+            <!-- TOMBOL LOGOUT PINDAHAN BARU DI BAGIAN PALING BAWAH MURNI -->
+            <div class="profile-logout-box">
+                <button class="btn-logout-main" onclick="eksekusiLogoutClean()">Logout</button>
+                
+            </div>
+ <div class="version-text">Version 5.0</div>
+        </div> <!-- Penutup profile-scroll-content -->
+
+        <!-- POP-UP OVERLAY BOTTOM SHEET PILIHAN INTERAKTIF -->
+        <div id="settingPopupModal" class="setting-popup-overlay" onclick="tutupPopupPengaturan(event)">
+            <div class="setting-popup-content">
+                <div class="notch-indicator"></div>
+                <h3 id="popupMenuTitle">Pilih Opsi</h3>
+                <div id="popupOptionsContainer" class="popup-options-vertical"></div>
+            </div>
+        </div>
+
+    </div> <!-- Penutup phone-screen -->
+
+    <script>
+            // FUNGSI UTAMA SINKRONISASI DATA & PENGUNCI BAHASA SAAT LOAD AWAL (KEMBARAN NYA SUDAH DIHAPUS)
+        window.addEventListener('DOMContentLoaded', function() {
+            var namaTersimpan = localStorage.getItem('fuyu_username');
+            var emailTersimpan = localStorage.getItem('fuyu_email');
+            var fotoTersimpan = localStorage.getItem('fuyu_profile_photo'); 
+            
+            // Ambil bahasa terakhir yang dipilih user dari memori laptop (Default ke Indonesia jika kosong)
+            var bahasaAktif = localStorage.getItem('fuyu_language') || 'id';
+
+            // 1. SINKRONISASI NAMA USER
+            var elemenNama = document.getElementById('displayMenuName');
+            if (elemenNama) {
+                if (namaTersimpan && namaTersimpan.trim() !== "") {
+                    elemenNama.innerText = namaTersimpan;
+                    elemenNama.style.color = "#43006B";
+                    elemenNama.style.fontWeight = "700";
+                } else {
+                    // Teks ajakan awal menyesuaikan bahasa terakhir yang dipilih user
+                    if (bahasaAktif === 'en') elemenNama.innerText = "Please Complete Your Profile";
+                    else if (bahasaAktif === 'jp') elemenNama.innerText = "プロフィールを完成させてください";
+                    else elemenNama.innerText = "Silakan Lengkapi Profil";
+                    
+                    elemenNama.style.color = "#43006B";
+                    elemenNama.style.fontWeight = "700";
+                }
+            }
+
+            // 2. SINKRONISASI EMAIL USER
+            var elemenEmail = document.getElementById('displayMenuEmail');
+            if (elemenEmail) {
+                if (emailTersimpan && emailTersimpan.trim() !== "") {
+                    elemenEmail.innerText = emailTersimpan;
+                    elemenEmail.style.color = "#b388ff";
+                    elemenEmail.style.textDecoration = "underline";
+                } else {
+                    // Teks panduan awal menyesuaikan bahasa terakhir yang dipilih user
+                    if (bahasaAktif === 'en') elemenEmail.innerText = "Tap the button below to fill in your personal data";
+                    else if (bahasaAktif === 'jp') elemenEmail.innerText = "下のボタンをタップして個人データを入力してください";
+                    else elemenEmail.innerText = "...";
+                    
+                    elemenEmail.style.color = "#b388ff";
+                    elemenEmail.style.textDecoration = "none";
+                }
+            }
+
+            // 3. SINKRONISASI SELEKSI JUDUL DAN TOMBOL MENYESUAIKAN BAHASA AKTIF
+            if (bahasaAktif === 'en') {
+                if (document.querySelector('.page-title')) document.querySelector('.page-title').innerText = "Profile";
+                if (document.querySelector('.follow-us-title')) document.querySelector('.follow-us-title').innerText = "Follow us";
+                if (document.querySelector('.btn-trigger-edit')) document.querySelector('.btn-trigger-edit').innerText = "Edit Profile";
+            } else if (bahasaAktif === 'jp') {
+                if (document.querySelector('.page-title')) document.querySelector('.page-title').innerText = "プロフィール";
+                if (document.querySelector('.follow-us-title')) document.querySelector('.follow-us-title').innerText = "フォローする";
+                if (document.querySelector('.btn-trigger-edit')) document.querySelector('.btn-trigger-edit').innerText = "プロフィール編集";
+            }
+
+            // 4. SINKRONISASI FOTO PROFIL UTAMA
+            var elemenFoto = document.getElementById('displayMenuPhoto');
+            if (fotoTersimpan && elemenFoto) {
+                elemenFoto.src = fotoTersimpan;
+            } else if (elemenFoto) {
+                elemenFoto.src = "profileicon.png";
+            }
+        });
+
+        // 2. BANK DATA OPSI POP-UP BARU YANG SUPER FUNGSIONAL & MATANG
+              // CUKUP PAKANG DUA BARIS INI SAJA DI BAGIAN ABOUT APP
+        var dataOpsiMenu = {
+            'About App': ['Privacy Policy', 'Terms of Service'],
+            'Language': ['Indonesia (ID)', 'English (US)', '日本語 (JP)'],
+            'FAQ & Support': ['Cara Pakai Daily Tracker', 'Laporkan Bug / Error 🪲', 'Kirim Kritik & Saran'],
+            'Manage Data': ['Cek Info Pembaruan Aplikasi', 'Bersihkan Cache Aplikasi 🧹', 'Reset Total Riwayat Data'],
+            'Application Security': ['Pasang PIN Keamanan 🔒', 'Pasang Kunci Pola', 'Aktifkan Biometric Fingerprint']
+        };
+
+
+               // 3. Fungsi membuka pop-up menu bottom sheet (VERSI UPDATE MULTI-BAHASA AMAN)
+        function bukaPopupPengaturan(jenisMenu) {
+            var modal = document.getElementById('settingPopupModal');
+            var judul = document.getElementById('popupMenuTitle');
+            var wadahOpsi = document.getElementById('popupOptionsContainer');
+            
+            if (modal && judul && wadahOpsi) {
+                judul.innerText = jenisMenu;
+                wadahOpsi.innerHTML = ""; 
+                
+                var opsiTersedia = dataOpsiMenu[jenisMenu] || [];
+                
+                opsiTersedia.forEach(function(pilihan) {
+                    var tombolOpsi = document.createElement('button');
+                    tombolOpsi.className = 'opt-select-btn';
+                    tombolOpsi.innerText = pilihan;
+                    tombolOpsi.onclick = function() {
+                        
+                        // ========================================================
+                        // LOGIKA BARU: JIKA USER MENGKLIK MENU LANGUAGE/BAHASA
+                        // ========================================================
+                        if (jenisMenu === 'Language') {
+                            var kodeBahasa = 'id';
+                            if (pilihan.includes('English')) kodeBahasa = 'en';
+                            if (pilihan.includes('日本語')) kodeBahasa = 'jp';
+                            
+                            // Amankan pilihan bahasa user ke memori laptop
+                            localStorage.setItem('fuyu_language', kodeBahasa);
+                            
+                            // Kamus terjemahan instan
+                            var kamus = {
+                                'id': { judul: 'Profil', ikuti: 'Ikuti kami', edit: 'Edit Profile', ajakanNama: 'Silakan Lengkapi Profil', ajakanEmail: '...', alertMsg: 'Anda memilih bahasa: ' },
+                                'en': { judul: 'Profile', ikuti: 'Follow us', edit: 'Edit Profile', ajakanNama: 'Please Complete Your Profile', ajakanEmail: 'Tap the button below to fill in your personal data', alertMsg: 'You selected language: ' },
+                                'jp': { judul: 'プロフィール', ikuti: 'フォローする', edit: 'プロフィール編集', ajakanNama: 'プロフィールを完成させてください', ajakanEmail: '下のボタンをタップして個人データを入力してください', alertMsg: '選択された言語: ' }
+                            };
+                            
+                            var t = kamus[kodeBahasa];
+                            
+                            // Mulai ganti teks di layar secara live!
+                            if (document.querySelector('.page-title')) document.querySelector('.page-title').innerText = t.judul;
+                            if (document.querySelector('.follow-us-title')) document.querySelector('.follow-us-title').innerText = t.ikuti;
+                            if (document.querySelector('.btn-trigger-edit')) document.querySelector('.btn-trigger-edit').innerText = t.edit;
+                            
+                            // Jika data nama/email masih kosong, ikut terjemahkan teks ajakannya
+                            var namaAda = localStorage.getItem('fuyu_username');
+                            var emailAda = localStorage.getItem('fuyu_email');
+                            if (!namaAda || namaAda.trim() === "") document.getElementById('displayMenuName').innerText = t.ajakanNama;
+                            if (!emailAda || emailAda.trim() === "") document.getElementById('displayMenuEmail').innerText = t.ajakanEmail;
+                            
+                            alert(t.alertMsg + pilihan);
+                        } 
+                        // ========================================================
+                        // Respon khusus jika user klik Bersihkan Cache
+                        else if (pilihan.includes('Bersihkan Cache')) {
+                            alert('Sampah cache aplikasi berhasil disapu bersih! HP kamu enteng lagi 🧹✨');
+                        } else {
+                            alert('Membuka menu: ' + pilihan);
+                        }
+                        modal.style.display = 'none';
+                    };
+                    wadahOpsi.appendChild(tombolOpsi);
+                });
+                
+                modal.style.display = 'flex'; 
+            }
+        }
+
+        function tutupPopupPengaturan(e) {
+            var modal = document.getElementById('settingPopupModal');
+            if (e.target === modal) { modal.style.display = 'none'; }
+        }
+
+        // 4. LOGIKA LOGOUT BERSIH TOTAL BALIK KE KUCING DEPAN
+        function eksekusiLogoutClean() {
+            localStorage.clear(); // Bersihkan memori hantu
+            window.location.href = 'index.html'; // Meluncur mulus ke depan
+        }
+    </script>
+
+</body>
+</html>

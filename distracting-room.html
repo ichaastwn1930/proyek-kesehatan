@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distracting Room - Fuyu Kesehatan</title>
+    
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS terpisah -->
+    <link rel="stylesheet" href="distracting-style.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <div class="cloud-top-decor"></div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- TOMBOL KEMBALI KE CHAT -->
+        <div class="back-nav">
+            <a href="chat-consult.html" class="back-btn">◀</a>
+        </div>
+
+        <!-- HEADER JUDUL -->
+        <div class="header-section">
+            <div class="title-banner">Distracting Room</div>
+            <p class="subtitle-text">Luapkan emosi mu hingga Neko<br>mendengarnya!</p>
+        </div>
+
+        <!-- KARTU UTAMA GAME -->
+        <div class="main-game-card">
+            
+            <div class="card-top-row">
+                <!-- TOMBOL GARIS TIGA (---) UNTUK INFO LEVEL -->
+                <button class="info-toggle-btn" onclick="toggleDbLegend()" title="Lihat Info Level Suara">
+                    <div class="hamburger-box">
+                        <span></span><span></span><span></span>
+                    </div>
+                </button>
+
+                <div class="db-legend-card" id="dbLegendBox">
+                    <div><span class="lvl-1">Level 1: &lt;40 dB</span> <span class="db-desc">[Whispers]</span></div>
+                    <div><span class="lvl-2">Level 2: 40 - 60 dB</span> <span class="db-desc">[Normal]</span></div>
+                    <div><span class="lvl-3">Level 3: 61 - 80 dB</span> <span class="db-desc">[Loud]</span></div>
+                    <div><span class="lvl-4">Level 4: 81 - 100+ dB</span> <span class="db-desc">[Scream]</span></div>
+                </div>
+
+                <div class="battery-container">
+                    <div class="battery-cap"></div>
+                    <div class="battery-body">
+                        <div class="bat-bar" id="bar1"></div>
+                        <div class="bat-bar" id="bar2"></div>
+                        <div class="bat-bar" id="bar3"></div>
+                        <div class="bat-bar" id="bar4"></div>
+                        <div class="bat-bar" id="bar5"></div>
+                    </div>
+                </div>
+            </div>
+
+                     <!-- AREA PET NEKO DENGAN BANTAL KUNING & KUCING ASLI -->
+            <div class="neko-stage" id="nekoStage">
+                <img src="bantalku.png" alt="Bantal Kuning" class="bantal-img">
+                <img src="kucingmic.png" alt="Kucing Neko" class="kucing-img" id="nekoAvatar">
+                <div class="neko-status-badge" id="nekoStatus">Neko sedang tidur...</div>
+            </div>
+
+            <!-- TOMBOL MIC REAL-TIME + EFEK GELOMBANG SUARA -->
+            <button class="mic-control-btn" id="micBtn" onclick="toggleDeteksiMic()">
+                <div class="mic-wave-wrapper">
+                    <!-- Gelombang Kiri -->
+                    <div class="sound-wave wave-left" id="waveLeft">
+                        <div class="wave-arc arc-3"></div>
+                        <div class="wave-arc arc-2"></div>
+                        <div class="wave-arc arc-1"></div>
+                    </div>
+
+                    <!-- Ikon Mic Asli -->
+                    <img src="mic.png" alt="Mic Icon" class="mic-img-icon">
+
+                    <!-- Gelombang Kanan -->
+                    <div class="sound-wave wave-right" id="waveRight">
+                        <div class="wave-arc arc-1"></div>
+                        <div class="wave-arc arc-2"></div>
+                        <div class="wave-arc arc-3"></div>
+                    </div>
+                </div>
+                <span class="db-readout-text" id="dbReadout">Klik Mic untuk tes suara!</span>
+            </button>
+
+            <button class="surprising-btn" onclick="simulasiTeriakanKaget()">Suprising Me!</button>
+        </div>
+
+        <div class="bottom-sliders-card">
+            <div class="slider-track"><div class="slider-fill" id="progEmosi1" style="width: 35%;"></div></div>
+            <div class="slider-track"><div class="slider-fill" id="progEmosi2" style="width: 20%;"></div></div>
+            <div class="slider-track"><div class="slider-fill" id="progEmosi3" style="width: 50%;"></div></div>
+        </div>
+    </div>
+
+    <script>
+        var isLegendOpen = false;
+        var isMicActive = false;
+        var audioContext, analyser, microphone, javascriptNode, mediaStream;
+        var skorPelepasanEmosi = 0;
+
+        // 1. TAMPILKAN / SEMBUNYIKAN INFO LEVEL SUARA
+        function toggleDbLegend() {
+            var box = document.getElementById('dbLegendBox');
+            isLegendOpen = !isLegendOpen;
+            box.style.display = isLegendOpen ? 'block' : 'none';
+        }
+
+        // 2. AKTIFKAN / MATIKAN MIKROFON ASLI UNTUK TES SUARA
+        function toggleDeteksiMic() {
+            var btn = document.getElementById('micBtn');
+            var readout = document.getElementById('dbReadout');
+
+            // Jika sedang aktif, matikan mic
+            if (isMicActive) {
+                isMicActive = false;
+                btn.classList.remove('mic-listening');
+                readout.innerText = "Mic dimatikan. Klik lagi untuk tes!";
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                }
+                if (audioContext) {
+                    audioContext.close();
+                }
+                updateVisualLevelSuara(30);
+                return;
+            }
+
+            // Cek dukungan browser
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                readout.innerText = "Browser tidak mendukung Mic.";
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function(stream) {
+                mediaStream = stream;
+                isMicActive = true;
+                btn.classList.add('mic-listening');
+                readout.innerText = "Mic Aktif! Coba bersuara / teriak! 🔊";
+
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
+
+                microphone.connect(analyser);
+                analyser.connect(javascriptNode);
+                javascriptNode.connect(audioContext.destination);
+
+                javascriptNode.onaudioprocess = function() {
+                    if (!isMicActive) return;
+                    var array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    var values = 0;
+                    for (var i = 0; i < array.length; i++) {
+                        values += array[i];
+                    }
+                    var average = values / array.length;
+                    // Konversi amplitudo suara ke skala desibel (30 dB - 105 dB)
+                    var realTimeDb = Math.min(105, Math.max(30, Math.round(average * 1.5) + 30));
+                    updateVisualLevelSuara(realTimeDb);
+                };
+            })
+            .catch(function(err) {
+                readout.innerText = "Izin Mic ditolak browser. Izinkan mic di pojok kiri URL!";
+            });
+        }
+
+        // 3. SIMULASI TERIAKAN (JIKA TIDAK INGIN BERISIK)
+        function simulasiTeriakanKaget() {
+            var randomScreamDb = Math.floor(Math.random() * 26) + 75;
+            updateVisualLevelSuara(randomScreamDb);
+
+            setTimeout(function() {
+                if (!isMicActive) {
+                    updateVisualLevelSuara(30);
+                }
+            }, 1800);
+        }
+
+          // 4. UPDATE BATERAI, REAKSI NEKO, GELOMBANG SUARA, & SLIDER
+        function updateVisualLevelSuara(db) {
+            document.getElementById('dbReadout').innerText = (isMicActive ? "🔴 Live: " : "Volume: ") + db + " dB";
+
+            for (var i = 1; i <= 5; i++) {
+                document.getElementById('bar' + i).className = 'bat-bar';
+            }
+
+            var stage = document.getElementById('nekoStage');
+            var status = document.getElementById('nekoStatus');
+            var waveLeft = document.getElementById('waveLeft');
+            var waveRight = document.getElementById('waveRight');
+
+            // Aktifkan efek gelombang suara jika volume >= 40 dB
+            if (db >= 40) {
+                waveLeft.classList.add('wave-active');
+                waveRight.classList.add('wave-active');
+            } else {
+                waveLeft.classList.remove('wave-active');
+                waveRight.classList.remove('wave-active');
+            }
+
+            if (db < 40) {
+                document.getElementById('bar1').classList.add('active-1');
+                stage.classList.remove('shake-neko');
+                status.innerText = "Level 1: Whispers (Tidur pulas)";
+            } else if (db <= 60) {
+                document.getElementById('bar1').classList.add('active-1');
+                document.getElementById('bar2').classList.add('active-2');
+                stage.classList.remove('shake-neko');
+                status.innerText = "Level 2: Normal (Mulai terusik)";
+            } else if (db <= 80) {
+                document.getElementById('bar1').classList.add('active-1');
+                document.getElementById('bar2').classList.add('active-2');
+                document.getElementById('bar3').classList.add('active-3');
+                document.getElementById('bar4').classList.add('active-4');
+                stage.classList.add('shake-neko');
+                status.innerText = "Level 3: Loud! Neko kaget!";
+                tambahPoinPelepasan(5);
+            } else {
+                for (var j = 1; j <= 5; j++) {
+                    document.getElementById('bar' + j).classList.add('active-' + j);
+                }
+                stage.classList.add('shake-neko');
+                status.innerText = "Level 4: SCREAM! Neko bangun!";
+                tambahPoinPelepasan(10);
+            }
+        }
+
+        function tambahPoinPelepasan(poin) {
+            skorPelepasanEmosi = Math.min(100, skorPelepasanEmosi + poin);
+            document.getElementById('progEmosi1').style.width = Math.min(100, 35 + skorPelepasanEmosi) + "%";
+            document.getElementById('progEmosi2').style.width = Math.min(100, 20 + skorPelepasanEmosi) + "%";
+            document.getElementById('progEmosi3').style.width = Math.min(100, 50 + skorPelepasanEmosi) + "%";
+        }
+    </script>
+</body>

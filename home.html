@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS terpisah -->
+   <link rel="stylesheet" href="home-styles.css">
+
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- 1. AWAN BACKGROUND (Bisa diganti file gambar awan kanan figma nanti) -->
+        <img src="awankanan.png" alt="Awan Kanan" class="awan-kanan-kustom">
+        <img src="awanbawah.png" alt="Awan Kiri Bawah" class="awan-kiri-bawah">
+
+        <!-- 2. STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+              <!-- 3. HEADER PROFIL USER (SUDAH TERHUBUNG KE PROFIL & NOTIFIKASI) -->
+        <div class="header-profile">
+            <div class="profile-left">
+                <!-- Pintu gerbang klik menuju ke halaman Edit Profile -->
+                <a href="profile.html" style="text-decoration: none;">
+                    <button class="avatar-box">
+                       <img src="profileicon.png" class="avatar-box-img" alt="Profil">
+                    </button>
+                </a>
+                <span class="username">Hello, Fuyu!</span>
+            </div>
+            
+            <div class="header-icons">
+                
+                <!-- GANTI DI SINI: Tombol lonceng sekarang dibungkus tag <a> jembatan notifikasi -->
+                <a href="notification.html" style="text-decoration: none;">
+                    <button class="circle-btn">
+                        <img src="notif.png" class="header-custom-icon" alt="Notifikasi">
+                    </button>
+                </a>
+                
+                <!-- Tombol Tema Cerah/Gelap -->
+                <button class="circle-btn">
+                    <img src="bright.png" class="header-custom-icon" alt="Tema">
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. AREA KONTEN TENGAH (BISA DI-SCROLL) -->
+        <div class="scroll-content">
+            
+                      <!-- 1. CARD DAILY LOGIN (7 HARI DENGAN FOTO ASLI) -->
+            <div class="card daily-card">
+                <h3>Daily Login</h3>
+                <div class="login-row">
+                    
+                    <!-- Hari 1 (Sudah Login / Active) -->
+                    <div class="login-box" onclick="absenHari(this)">
+            
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 1" class="daily-cat-img">
+                        </div>
+                        <span class="day-text">01</span>
+                    </div>
+
+                    <!-- Hari 2 (Sudah Login / Active) -->
+                    <div class="login-box active" onclick="absenHari(this)">
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 2" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">02</span>
+                    </div>
+
+                    <!-- Hari 3 (Belum Login / Tidak ada class active) -->
+                    <div class="login-box" onclick="absenHari(this)">
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 3" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">03</span>
+                    </div>
+
+                    <!-- Hari 4 -->
+                    <div class="login-box" onclick="absenHari(this)">
+                
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 4" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">04</span>
+                    </div>
+
+                    <!-- Hari 5 -->
+                    <div class="login-box" onclick="absenHari(this)">
+                     
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 5" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">05</span>
+                    </div>
+
+                    <!-- Hari 6 -->
+                    <div class="login-box" onclick="absenHari(this)">
+                      
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 6" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">06</span>
+                    </div>
+
+                    <!-- Hari 7 -->
+                    <div class="login-box" onclick="absenHari(this)">
+                       
+                        <div class="box-bottom">
+                            <img src="kucingday.png" alt="Day 7" class="daily-cat-img">
+                        </div>
+                         <span class="day-text">07</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+                       <!-- 2. CARD MOOD RECAP INTERAKTIF -->
+            <div class="card mood-card">
+                <h3>Mood Recap</h3>
+                <div class="chart-simulation">
+                    
+                    <svg class="chart-svg" viewBox="0 0 360 160">
+                        <path d="M 10 120 L 70 60 L 130 90 L 190 40 L 250 20 L 310 65 L 350 65" fill="none" stroke="#43006B" stroke-width="3"/>
+                        <line x1="70" y1="60" x2="70" y2="130" stroke="#43006B" stroke-width="1" stroke-dasharray="3"/>
+                        <line x1="130" y1="90" x2="130" y2="130" stroke="#43006B" stroke-width="1" stroke-dasharray="3"/>
+                        <line x1="190" y1="40" x2="190" y2="130" stroke="#43006B" stroke-width="1" stroke-dasharray="3"/>
+                        <line x1="250" y1="20" x2="250" y2="130" stroke="#43006B" stroke-width="1" stroke-dasharray="3"/>
+                        <line x1="310" y1="65" x2="310" y2="130" stroke="#43006B" stroke-width="1" stroke-dasharray="3"/>
+                        <line x1="10" y1="130" x2="350" y2="130" stroke="#43006B" stroke-width="1.5"/>
+                    </svg>
+
+                                       <!-- TITIK 1: MOOD SEDIH (BISA DIGESER NAIK TURUN) -->
+                    <div class="mood-node" style="top: 20px; left: 43px;">
+                        <img src="kucingsedih.png" alt="Sedih" class="mood-cat-btn" onclick="toggleTooltip('tip1')">
+                        
+                        <div class="glass-tooltip" id="tip1">
+                            <h5>How's Today?</h5>
+                            
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100" value="0" class="vertical-slider blue-slider" id="slide-tip1" oninput="updateMoodLive('tip1', this.value)">
+                                
+                                <div class="bar-track-bg">
+                                    <div class="bar-track-fill" id="fill-tip1" style="height: 0%;"></div>
+                                </div>
+                            </div>
+                            
+                            <span class="percentage-text" id="text-tip1">0%</span>
+                        </div>
+                    </div>
+
+
+                    <!-- TITIK 2: MOOD MARAH -->
+                    <div class="mood-node" style="top: 50px; left: 95px;">
+                        <img src="kucingmarah.png" alt="Marah" class="mood-cat-btn" onclick="toggleTooltip('tip2')">
+                        <div class="glass-tooltip" id="tip2">
+                            <h5>How's Today?</h5>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100" value="0" class="vertical-slider red-slider" id="slide-tip2" oninput="updateMoodLive('tip2', this.value)">
+                                <div class="bar-track-bg">
+                                    <div class="bar-track-fill" id="fill-tip2" style="height: 0%;"></div>
+                                </div>
+                            </div>
+                            <span class="percentage-text" id="text-tip2">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- TITIK 3: MOOD PUSING / CAPEK -->
+                    <div class="mood-node" style="top: 5px; left: 150px;">
+                        <img src="kucingstres.png" alt="Pusing" class="mood-cat-btn" onclick="toggleTooltip('tip3')">
+                        <div class="glass-tooltip" id="tip3">
+                            <h5>How's Today?</h5>
+                           <div class="slider-container">
+                                <input type="range" min="0" max="100" value="0" class="vertical-slider grey-slider" id="slide-tip3" oninput="updateMoodLive('tip3', this.value)">
+                                <div class="bar-track-bg">
+                                    <div class="bar-track-fill" id="fill-tip3" style="height: 0%;"></div>
+                                </div>
+                            </div>
+                            <span class="percentage-text" id="text-tip3">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- TITIK 4: MOOD TENANG-->
+                    <div class="mood-node" style="top: -15px; left: 210px;">
+                        <img src="kucingtenang.png" alt="Pusing" class="mood-cat-btn" onclick="toggleTooltip('tip4')">
+                        <div class="glass-tooltip" id="tip4">
+                            <h5>How's Today?</h5>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100" value="0" class="vertical-slider green-slider" id="slide-tip4" oninput="updateMoodLive('tip4', this.value)">
+                                <div class="bar-track-bg">
+                                    <div class="bar-track-fill" id="fill-tip4" style="height: 0%;"></div>
+                                </div>
+                            </div>
+                            <span class="percentage-text" id="text-tip4">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- TITIK 5: MOOD CERIA -->
+                    <div class="mood-node" style="top: 25px; left: 260px;">
+                        <img src="kucingceria.png" alt="Pusing" class="mood-cat-btn" onclick="toggleTooltip('tip5')">
+                        <div class="glass-tooltip" id="tip5">
+                            <h5>How's Today?</h5>
+                             <div class="slider-container">
+                                <input type="range" min="0" max="100" value="0" class="vertical-slider yellow-slider" id="slide-tip5" oninput="updateMoodLive('tip5', this.value)">
+                                <div class="bar-track-bg">
+                                    <div class="bar-track-fill" id="fill-tip5" style="height: 0%;"></div>
+                                </div>
+                            </div>
+                            <span class="percentage-text" id="text-tip5">0%</span>
+                        </div>
+                    </div>
+
+
+                      <!-- Teks Angka Persentase di Bagian Bawah Grafik (SUDAH DIBERI ID) -->
+                    <div class="chart-labels">
+                        <span id="label-tip1" style="left: 60px; color: #5c6bc0;">0%</span>
+                        <span id="label-tip2" style="left: 120px; color: #ef5350;">0%</span>
+                        <span id="label-tip3" style="left: 180px; color: #565357;">0%</span>
+                        <span id="label-tip4" style="left: 240px; color: #66bb6a; font-weight: 700;">0%</span>
+                        <span id="label-tip5" style="left: 300px; color: #fbc02d;">0%</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- C. Banner Balon Chat Kucing Komunikasi -->
+            <!-- Kita tambahkan ID dan fungsi onclick agar interaktif saat disentuh user -->
+            <div class="bubble-chat-container" onclick="kocokSapaanKucing()" style="cursor: pointer;" title="Klik untuk sapaan lainnya!">
+                <div class="cat-avatar-frame">
+                    <img src="kucingpaw2.png" alt="Kucing Paw" class="cat-avatar-img">
+                </div>
+                <div class="bubble-text">
+                    <!-- Beri ID id="teksSapaanKucing" pada tag <p> agar teksnya bisa diganti otomatis lewat JS -->
+                    <p id="teksSapaanKucing">"Hey Fuyu, your heart rate seems a bit chaotic today—did you forget to take a break, or do I just need to purr/bark louder to fix it?"</p>
+                </div>
+            </div>
+
+
+                      <!-- CARD TODAY GOALS (TERHUBUNG KE HALAMAN TIMERS PINTAR) -->
+            <div class="card goals-card">
+                <div class="goals-info">
+                    <span class="icon-large">📅</span>
+                    <div class="goals-text">
+                        <h4>Today Goals</h4>
+                        <p>Belajar Bahasa Jepang 3 jam</p>
+                    </div>
+                </div>
+                <!-- Membuka gerbang jembatan menuju ke file goals.html -->
+                <a href="goals.html" style="text-decoration: none;">
+                    <button class="btn-start">Start</button>
+                </a>
+            </div>
+
+
+                              <!-- 5. NAVIGATION BAR BAWAH INTERAKTIF PREMIUM (FULL GAMBAR ASLI FIGMA) -->
+        <div class="bottom-nav-container">
+            <!-- Batang ungu yang sudah kamu replace kosongan (nav-bg.png) -->
+            <img src="nav-bg.png" alt="Navbar Background" class="nav-bg-img">
+
+            <div class="nav-menu-items">
+                <!-- Tombol 1: Home (PENTING: Ganti kata di dalam src dengan nama file aslimu) -->
+                <button class="nav-item-btn active" onclick="pindahNav(0, 'home.html', this)">
+                    <div class="nav-icon-wrapper">
+                        <img src="home-nav.png" alt="Home" class="nav-custom-icon">
+                    </div>
+                </button>
+
+                <!-- Tombol 2: Chat (PENTING: Ganti kata di dalam src dengan nama file aslimu) -->
+                <button class="nav-item-btn" onclick="pindahNav(1, 'chat.html', this)">
+                    <div class="nav-icon-wrapper">
+                        <img src="chat-nav.png" alt="Chat" class="nav-custom-icon">
+                    </div>
+                </button>
+
+                <!-- Tombol 3: Kucing (pet-nav.jpg) -->
+                <button class="nav-item-btn" onclick="pindahNav(2, 'petpage.html', this)">
+                    <div class="nav-icon-wrapper">
+                        <img src="pet-nav.png" alt="Pet Menu" class="nav-custom-icon">
+                    </div>
+                </button>
+
+                <!-- Tombol 4: Kalender Hati (recap-nav.png) -->
+                <button class="nav-item-btn" onclick="pindahNav(3, 'recap.html', this)">
+                    <div class="nav-icon-wrapper">
+                        <img src="recap-nav.png" alt="Recap Menu" class="nav-custom-icon">
+                    </div>
+                </button>
+            </div>
+        </div>
+
+    <!-- LOGIKA JAVASCRIPT AKHIR (UNTUK PERGESERAN) -->
+        <!-- LOGIKA JAVASCRIPT AKHIR (UNTUK PERGESERAN) -->
+    <script>
+        // DATA BASE MOOD USER (Kamu bisa mengubah angka-angka di bawah ini secara live!)
+        var dataMoodUser = {
+            tip1: 45,  // Persentase Mood Sedih
+            tip2: 15,  // Persentase Mood Marah
+            tip3: 60,  // Persentase Mood Stres
+            tip4: 75,  // Persentase Mood Tenang
+            tip5: 50   // Persentase Mood Senang
+        };
+
+                // A. Fungsi Membuka/Menutup Pop-up (Tetap Pertahankan Yang Lama)
+        function toggleTooltip(id) {
+            var tooltip = document.getElementById(id);
+            if (tooltip.style.display === "block") {
+                tooltip.style.display = "none";
+            } else {
+                var allTooltips = document.querySelectorAll('.glass-tooltip');
+                allTooltips.forEach(function(box) { box.style.display = 'none'; });
+                tooltip.style.display = "block";
+            }
+        }
+
+        // FUNGSI BARU: MENGUPDATE WARNA BAR DAN ANGKA SECARA LIVE SAAT DIGESER USER
+        function updateMoodLive(id, nilaiBaru) {
+            // 1. Update tinggi visual bar energi di dalam pop-up secara live
+            var visualFill = document.getElementById('fill-' + id);
+            if (visualFill) {
+                visualFill.style.height = nilaiBaru + '%';
+            }
+
+            // 2. Update teks angka di dalam pop-up secara live
+            var textPopup = document.getElementById('text-' + id);
+            if (textPopup) {
+                textPopup.innerText = nilaiBaru + '%';
+            }
+
+            // 3. Update angka persentase di barisan paling bawah grafik secara live!
+            var labelBawah = document.getElementById('label-' + id);
+            if (labelBawah) {
+                labelBawah.innerText = nilaiPersen = nilaiBaru + '%';
+            }
+        }
+
+
+        // B. Logika Klik Sakelar (Toggle) Absen Daily Login (TETAP DIAMANKAN)
+        function absenHari(element) {
+            element.classList.toggle('active');
+        }
+
+        // C. Logika Tombol Navigasi Berubah Ungu Muda Transparan
+        function pindahNav(index, url, element) {
+            // Matikan kelas aktif di semua tombol lama
+            document.querySelectorAll('.nav-item-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Nyalakan kelas aktif di tombol yang baru di-klik
+            element.classList.add('active');
+            
+            // Beri jeda animasi sedikit (250ms), lalu otomatis pindah halaman web!
+            setTimeout(function() {
+                window.location.href = url;
+            }, 250);
+        }
+
+                // ========================================================
+        // BANK DATA 30 SAPAAN AVATAR KUCING (INTERAKTIF & ANTI MONOTON)
+        // ========================================================
+        var bankSapaanFuyu = [
+            // --- 10 Kalimat Pendekatan Asyik dari AI ---
+            "Bentar, coba tarik napas dulu... Hembuskan... Nah, sekarang kasih tahu aku, bagian pundak kamu lagi kaku banget ya hari ini? 🐾",
+            "Fuyu, seharian ini kamu keren banget! Tapi tolong ya, mata kamu butuh istirahat dari layar. Yuk merem bentar, aku temenin.",
+            "Tadi aku sempet denger suara perut kamu lho. Jangan pura-pura ga denger ya! Ambil camilan sehat sana, buruan~ 🍲",
+            "Hey Fuyu, detak jantung kamu agak kejar-kejaran hari ini. Lagi dengerin lagu jedag-jedug atau emang lagi dikejar *deadline* nih? 🎧",
+            "Kalau kamu ngerasa hari ini berat banget, inget ya, di sini ada aku yang selalu siap dengerin keluhan kamu. *Purr...*",
+            "Stresnya disimpen dulu ya buat besok. Sekarang waktunya minum air putih segelas penuh. Ga ada penolakan! 💧",
+            "Fuyu, coba cek posisi duduk kamu sekarang. Tegak dikit yuk, jangan sampai tulang belakang kamu protes ke aku!",
+            "Hari ini ada yang bikin kamu kesel ya? Sini cerita ke aku, ntar malam aku bantu cakar orangnya di mimpi! 🐾😾",
+            "Jangan maksain diri ya. Istirahat 5 menit ga bakal bikin goals kamu gagal kok. Aku jagain kok di sini.",
+            "Hey, makasih ya udah bertahan dan berjuang sampai jam segini. Kamu berharga banget, Fuyu. Proud of you! ✨",
+
+            // --- 20 Slot Kosong Siap Pakai (Tinggal Kamu Ubah Sendiri Teks di Dalam Tanda Kutipnya Nanti!) ---
+            "Silakan isi kalimat ke-11 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-12 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-13 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-14 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-15 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-16 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-17 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-18 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-19 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-20 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-21 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-22 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-23 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-24 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-25 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-26 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-27 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-28 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-29 kamu di sini ya Fuyu! 🐱",
+            "Silakan isi kalimat ke-30 kamu di sini ya Fuyu! 🐱"
+        ];
+
+        // FUNGSI INTI: Mengocok acak sapaan agar tidak monoton saat gelembung di-tap
+        function kocokSapaanKucing() {
+            var elemenTeks = document.getElementById('teksSapaanKucing');
+            if (elemenTeks) {
+                // Sihir matematika untuk memilih angka acak dari 0 sampai 29
+                var indeksAcak = Math.floor(Math.random() * bankSapaanFuyu.length);
+                
+                // Ganti teks di layar secara live dengan kalimat hasil kocokan acak
+                elemenTeks.innerText = bankSapaanFuyu[indeksAcak];
+            }
+        }
+
+    </script>
+
+</body>
+</html>

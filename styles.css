@@ -1,0 +1,89 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+
+.phone-screen {
+    width: 412px;
+    height: 892px;
+    background-color: white;
+    
+   
+    border-radius: 48px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    
+    position: relative; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+
+
+
+.awan-kustom {
+    width: 300px;
+    position: absolute;
+    top: 0%;
+    left: -20px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+
+.welcome-text {
+    position: relative;
+    z-index: 2;           
+    margin-top: 48px;     
+}
+
+.welcome-text h1 {
+    color: rgb(81 0 94);
+    font-size: 48px;
+    text-align: center;
+    margin-top: 100px;
+    margin-left: 20px;
+    font-weight: 500;
+}
+
+.welcome-text {
+    position: center;
+    z-index: 4;
+    margin-top: 4px; 
+}
+
+
+.welcome-text p {
+    color: rgb(81 0 94);
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 70;
+
+}
+.hint-text {
+    position: absolute;
+    bottom: 100px;
+    left: 40px;
+    color: #8a8a8a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cat-image {
+    width: 400px;
+    position: absolute;
+    bottom: -35px;
+    left: 130px;
+    z-index: 3;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS khusus notifikasi -->
+    <link rel="stylesheet" href="notification-styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- 1. DEKORASI AWAN UTAMA (Kanan Atas & Kiri Bawah) -->
+        <img src="awankanan.png" alt="Awan Kanan Atas" class="awan-notif awan-top-right">
+        <img src="awanbawah.png" alt="Awan Kiri Bawah" class="awan-notif awan-bottom-left">
+
+        <!-- 2. STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- 3. TOP NAVIGATION (Tombol Back & Judul Halaman) -->
+        <div class="top-nav-notif">
+            <a href="home.html" class="back-btn-link">
+                <span class="back-icon">👈</span> 
+            </a>
+            <h2 class="page-title">Notification</h2>
+        </div>
+
+        <!-- 4. AREA LIST NOTIFIKASI HARI INI (Bisa di-scroll ke bawah) -->
+        <div class="notif-scroll-content">
+            
+            <!-- Notif 1: Belum Dibaca (Glossy Menonjol) -->
+            <div class="notif-box unread" onclick="bacaNotif(this)">
+                <div class="notif-icon-wrapper">🍲</div>
+                <div class="notif-text-info">
+                    <h4>Waktunya Makan Siang!</h4>
+                    <p>Fuyu, kamu sudah belajar keras hari ini. Yuk istirahat sebentar dan isi energimu dengan makanan sehat! ❤️</p>
+                    <span class="notif-time">10 menit yang lalu</span>
+                </div>
+            </div>
+
+            <!-- Notif 2: Belum Dibaca (Glossy Menonjol) -->
+            <div class="notif-box unread" onclick="bacaNotif(this)">
+                <div class="notif-icon-wrapper">💧</div>
+                <div class="notif-text-info">
+                    <h4>Jangan Lupa Minum Air!</h4>
+                    <p>Sudah 2 jam kamu belum minum nih. Ambil segelas air putih dingin sekarang agar tetap fokus ya.</p>
+                    <span class="notif-time">1 jam yang lalu</span>
+                </div>
+            </div>
+
+            <!-- Notif 3: Belum Dibaca (Glossy Menonjol) -->
+            <div class="notif-box unread" onclick="bacaNotif(this)">
+                <div class="notif-icon-wrapper">🐾</div>
+                <div class="notif-text-info">
+                    <h4>Daily Goals Tracker</h4>
+                    <p>Si kucing Fuyu lagi nungguin laporan goals kamu hari ini loh. Sudah siap menekan tombol start?</p>
+                    <span class="notif-time">3 jam yang lalu</span>
+                </div>
+            </div>
+
+            <!-- Notif 4: Sudah Dibaca (Default Biasa/Flat) -->
+            <div class="notif-box" onclick="bacaNotif(this)">
+                <div class="notif-icon-wrapper">💤</div>
+                <div class="notif-text-info">
+                    <h4>Tidur Tepat Waktu</h4>
+                    <p>Selamat pagi! Kerja bagus semalam tidur tepat waktu di bawah jam 11 malam. Pertahankan ya!</p>
+                    <span class="notif-time">Kemarin</span>
+                </div>
+            </div>
+
+        </div> <!-- Penutup untuk notif-scroll-content -->
+    </div> <!-- Penutup untuk phone-screen -->
+
+    <!-- LOGIKA INTERAKTIF KLIK NOTIFIKASI -->
+    <script>
+        function bacaNotif(elemen) {
+            // Ketika di-klik, hilangkan class 'unread' agar efek glossy mati dan kembali jadi putih biasa
+            elemen.classList.remove('unread');
+        }
+    </script>
+
+</body>
+</html>

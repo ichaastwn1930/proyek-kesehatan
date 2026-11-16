@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PENTING: Memanggil nama file CSS kamu yang ada huruf s di ujungnya -->
+    <link rel="stylesheet" href="edit-profile.styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- AWAN BACKGROUND -->
+        <img src="awankanan.png" alt="Awan Kanan" class="awan-kanan-kustom" style="position: absolute; top: 0; right: 0; width: 60%; z-index: 1; pointer-events: none;">
+
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- HEADER TOP NAVIGATION -->
+        <div class="top-nav-profile">
+            <!-- Pulang kembali ke halaman Menu Utama Profil -->
+            <a href="profile.html" class="back-btn-link">👈</a>
+            <h2 class="page-title">Edit Profile</h2>
+        </div>
+
+        <!-- AREA KONTEN UTAMA YANG BISA DI-SCROLL -->
+        <div class="profile-scroll-content">
+            
+                     <!-- KOTAK FOTO PROFIL UTAMA (SUDAH DIKUNCI AMAN DARI BUG FOKUS) -->
+            <div class="avatar-container-large" id="avatarContainer">
+                <img src="profileicon.png" alt="Profile Image" class="main-profile-img" id="userProfileImage">
+                
+                              <!-- Pastikan di dalam onclick="bukaMenuFoto(event)" sudah tertulis kata event seperti ini -->
+                <div class="camera-badge-btn" onclick="bukaMenuFoto(event)" role="button" style="cursor: pointer;">📷</div>
+
+
+                <!-- KOTAK POP-UP OPSI FOTO KUSTOM -->
+                <div class="photo-options-menu" id="photoOptionsMenu" style="display: none;">
+                    <button class="menu-opt-btn text-purple" onclick="pemicuPilihFoto()">Pilih Foto Profil</button>
+                    <button class="menu-opt-btn text-purple" style="color: #d32f2f !important;" onclick="hapusFotoProfil()">Hapus Foto Profil</button>
+                </div>
+            </div>
+
+
+            <!-- ======================================================== -->
+            <!-- PENTING: KOTAK BINGKAI KARTU BARU (FONDASI UTAMA FRAME)   -->
+            <!-- ======================================================== -->
+            <div class="profile-card-frame">
+                <div class="profile-info-list">
+                    
+                    <!-- Baris 1: Username -->
+                    <div class="info-row">
+                        <label class="info-label" for="input-username">Username</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="input-username" class="profile-input-field" placeholder="Silakan isi username" oninput="pantauIsiKolom('username')">
+                            <span class="action-icon" id="icon-username" onclick="klikAksiIkon('username', 'input-username')">✏️</span>
+                        </div>
+                    </div>
+
+                    <!-- Baris 2: Email -->
+                    <div class="info-row">
+                        <label class="info-label" for="input-email">Email</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="input-email" class="profile-input-field text-lowercase" placeholder="Silakan isi email" oninput="pantauIsiKolom('email')">
+                            <span class="action-icon" id="icon-email" onclick="klikAksiIkon('email', 'input-email')">✏️</span>
+                        </div>
+                        <span id="error-email-msg" class="email-error-text">Format email wajib memiliki tanda @ dan domain (.com)</span>
+                    </div>
+
+                    <!-- Baris 3: Phone -->
+                    <div class="info-row">
+                        <label class="info-label" for="input-phone">Phone</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="input-phone" class="profile-input-field" placeholder="Silakan isi nomor telepon" oninput="pantauIsiKolom('phone')">
+                            <span class="action-icon" id="icon-phone" onclick="klikAksiIkon('phone', 'input-phone')">✏️</span>
+                        </div>
+                    </div>
+
+                    <!-- Baris 4: Date of Birth -->
+                    <div class="info-row">
+                        <label class="info-label" for="input-dob">Date of Birth</label>
+                        <div class="input-wrapper">
+                            <input type="date" id="input-dob" class="profile-input-field" onchange="simpanKalenderOtomatis(this.value)">
+                            <span class="action-icon" style="opacity: 0.6 !important;">✏️</span>
+                        </div>
+                    </div>
+
+                    <!-- Baris 5: Address -->
+                    <div class="info-row">
+                        <label class="info-label" for="input-address">Address</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="input-address" class="profile-input-field" placeholder="Silakan isi alamat" oninput="pantauIsiKolom('address')">
+                            <span class="action-icon" id="icon-address" onclick="klikAksiIkon('address', 'input-address')">✏️</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div> <!-- PENUTUP KARTU FRAME UTAMA -->
+
+            <!-- INPUT FILE TERSEMBUNYI -->
+            <input type="file" id="hiddenFileInput" accept="image/*" style="display: none;" onchange="gantiFotoLangsung(this)">
+        
+        <div id="toastSave" class="toast-save-notif">Data berhasil disimpan! ✨</div>
+
+    </div> <!-- Penutup phone-screen -->
+
+    <!-- LOGIKA JAVASCRIPT FORM PREMIUM -->
+    <script>
+        // 1. FUNGSI UTAMA KAMERA: Membuka dan menutup pop-up kustom secara instan dan responsif
+        function bukaMenuFoto() {
+            var menu = document.getElementById('photoOptionsMenu');
+            if (menu) {
+                // Sklar pintar: Sekali klik langsung ganti status block/none secara mantap
+                if (menu.style.display === "block") {
+                    menu.style.display = "none";
+                } else {
+                    menu.style.display = "block";
+                }
+            }
+        }
+
+        function pemicuPilihFoto() {
+            var input = document.getElementById('hiddenFileInput');
+            if (input) input.click();
+            document.getElementById('photoOptionsMenu').style.display = "none";
+        }
+
+             function gantiFotoLangsung(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var img = document.getElementById('userProfileImage');
+                    if (img) img.src = e.target.result;
+                    
+                    // BARIS KUNCI: Amankan file gambar baru ke dalam memori laptop secara permanen!
+                    localStorage.setItem('fuyu_profile_photo', e.target.result);
+                    
+                    var toast = document.getElementById('toastSave');
+                    if (toast) {
+                        toast.innerText = "Foto profil berhasil diperbarui! ✨";
+                        toast.style.display = 'block';
+                        setTimeout(function() { toast.style.display = 'none'; }, 2000);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        function hapusFotoProfil() {
+            if (confirm("Apakah kamu yakin ingin menghapus foto profil saat ini?")) {
+                var img = document.getElementById('userProfileImage');
+                if (img) img.src = "profileicon.png";
+                document.getElementById('photoOptionsMenu').style.display = "none";
+            }
+        }
+
+        // 2. FUNGSI MEMANTAU INPUT TEKS: Menambahkan kelas .mode-mengetik HANYA saat input teks aktif mengetik!
+        function pantauIsiKolom(kunci) {
+            var input = document.getElementById('input-' + kunci);
+            var ikon = document.getElementById('icon-' + kunci);
+            var avatarBox = document.getElementById('avatarContainer');
+            
+            if (input && ikon) {
+                if (input.value.trim() !== "") {
+                    ikon.innerText = '✅';
+                    ikon.style.opacity = '1';
+                } else {
+                    ikon.innerText = '✏️';
+                    ikon.style.opacity = '0.6';
+                }
+            }
+            
+            // SIHIR UTAMA: Picu foto profil mengecil saat kursor teks aktif di dalam kolom
+            if (avatarBox) {
+                avatarBox.classList.add('mode-mengetik');
+            }
+        }
+
+        // 3. FUNGSI UTAMA AKSI KLIK TOMBOL ACC CENTANG / PENSIL
+        function klikAksiIkon(kunci, idInput) {
+            var inputan = document.getElementById(idInput);
+            var ikon = document.getElementById('icon-' + kunci);
+            var pesanEror = document.getElementById('error-email-msg');
+            var avatarBox = document.getElementById('avatarContainer');
+            
+            if (inputan && ikon) {
+                if (ikon.innerText === '✅') {
+                    if (kunci === 'email') {
+                        var polaEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!polaEmail.test(inputan.value)) {
+                            if (pesanEror) pesanEror.style.display = 'block';
+                            inputan.focus();
+                            return;
+                        } else {
+                            if (pesanEror) pesanEror.style.display = 'none';
+                        }
+                    }
+                    localStorage.setItem('fuyu_' + kunci, inputan.value);
+                    
+                    // Kembalikan foto profil membesar kembali setelah tombol ACC diklik
+                    inputan.blur();
+                    if (avatarBox) avatarBox.classList.remove('mode-mengetik');
+                    
+                    ikon.innerText = '✏️';
+                    ikon.style.opacity = '0.6';
+                    
+                    var toast = document.getElementById('toastSave');
+                    if (toast) {
+                        toast.innerText = "Data berhasil disimpan! ✨";
+                        toast.style.display = 'block';
+                        setTimeout(function() { toast.style.display = 'none'; }, 2000);
+                    }
+                } else {
+                    inputan.focus();
+                    if (avatarBox) avatarBox.classList.add('mode-mengetik');
+                }
+            }
+        }
+
+        function simpanKalenderOtomatis(nilaiTanggal) {
+            if (nilaiTanggal.trim() !== "") {
+                localStorage.setItem('fuyu_dob', nilaiTanggal);
+                var toast = document.getElementById('toastSave');
+                if (toast) {
+                    toast.innerText = "Data berhasil disimpan! ✨";
+                    toast.style.display = 'block';
+                    setTimeout(function() { toast.style.display = 'none'; }, 2000);
+                }
+            }
+        }
+
+        // Memuat data saat halaman dibuka pertama kali
+        window.addEventListener('DOMContentLoaded', function() {
+            var list = ['username', 'email', 'phone', 'dob', 'address'];
+            list.forEach(function(kunci) {
+                var data = localStorage.getItem('fuyu_' + kunci);
+                var input = document.getElementById('input-' + kunci);
+                if (data && input) {
+                    input.value = data;
+                    if (kunci !== 'dob') {
+                        // Jalankan fungsi pengisian ikon tanpa memicu animasi menciut foto di awal halaman
+                        var ikon = document.getElementById('icon-' + kunci);
+                        if (input.value.trim() !== "" && ikon) {
+                            ikon.innerText = '✅';
+                            ikon.style.opacity = '1';
+                        }
+                    }
+                }
+            });
+        });
+
+               // ========================================================
+        // PERBAIKAN: MENJAGA POP-UP TETAP TERBUKA SAAT DIV KAMERA DI-KLIK
+        // ========================================================
+        window.addEventListener('click', function(e) {
+            var menu = document.getElementById('photoOptionsMenu');
+            var btnKamera = document.querySelector('.camera-badge-btn');
+            
+
+        });
+        </script>

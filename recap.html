@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Recap - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS khusus halaman recap -->
+    <link rel="stylesheet" href="recap-styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- BACKGROUND AWAN DEKORASI -->
+        <img src="awanbawah.png" alt="Awan Atas" class="awan-top-recap">
+
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+      <!-- 1. Tombol Back Mandiri (Berdiri Bebas di Kiri Atas Awan) -->
+        <a href="home.html" class="back-btn-link-independen">👈</a>
+        
+        <!-- 2. Kontainer Khusus Papan Judul Ungu (Mengunci Mutlak di Tengah) -->
+        <div class="top-nav-recap">
+            <div class="header-banner-papan">
+                <span class="text-di-atas-papan">My Recap</span>
+            </div>
+        </div>
+
+        <!-- AREA KONTEN UTAMA YANG BISA DI-SCROLL HALUS -->
+        <div class="recap-scroll-content">
+            
+            <!-- 1. KARTU KALENDER MINGGUAN (PREMIUM) -->
+            <div class="calendar-card-box">
+                <div class="calendar-header-row">
+                    <span class="arrow-cal">‹</span>
+                    <span class="current-month-badge">August - 2026</span>
+                    <span class="arrow-cal">›</span>
+                </div>
+                <div class="days-row-grid">
+                    <div class="day-item-col"><span>Mon</span><strong>16</strong></div>
+                    <div class="day-item-col active"><span>Tue</span><strong>17</strong></div>
+                    <div class="day-item-col"><span>Wed</span><strong>18</strong></div>
+                    <div class="day-item-col"><span>Thu</span><strong>19</strong></div>
+                    <div class="day-item-col"><span>Fri</span><strong>20</strong></div>
+                    <div class="day-item-col"><span>Sat</span><strong>21</strong></div>
+                    <div class="day-item-col"><span>Sun</span><strong>22</strong></div>
+                </div>
+            </div>
+
+            <!-- 2. AVATAR KUCING TENGAH -->
+            <div class="cat-recap-avatar">
+                <img src="kucing1.png" alt="Fuyu Cat Recap">
+            </div>
+
+            <!-- 3. KARTU GRAFIK AKTIVITAS (ACTIVITY TODAY) -->
+            <div class="activity-timeline-card">
+                <h4 class="card-inside-title">Activity Today</h4>
+                <span class="nav-arrow-left">‹</span>
+                <span class="nav-arrow-right">›</span>
+                
+                <!-- Diagram Batang Horizontal Kustom -->
+                <div class="timeline-chart-wrapper">
+                    <div class="vertical-grid-lines">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="bar-rows-container">
+                        <div class="bar-item grey-bar" style="width: 15%; margin-left: 0%;"></div>
+                        <div class="bar-item purple-bar" style="width: 18%; margin-left: 15%;"></div>
+                        <div class="bar-item red-bar" style="width: 12%; margin-left: 33%;"></div>
+                        <div class="bar-item green-bar" style="width: 20%; margin-left: 45%;"></div>
+                        <div class="bar-item yellow-bar" style="width: 15%; margin-left: 65%;"></div>
+                        <div class="bar-item green-bar" style="width: 20%; margin-left: 80%;"></div>
+                    </div>
+                    <div class="chart-hours-labels">
+                        <span>04.00</span><span>08.00</span><span>12.00</span><span>16.00</span><span>20.00</span><span>00.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. KARTU RESUME AKTIVITAS (LIST CAKAR KUCING) -->
+            <div class="resume-activity-card">
+                <div class="resume-badge-header">Resume Activity Today</div>
+                
+                <div class="resume-list-vertical">
+                    <!-- Baris 1: Free Time -->
+                    <div class="resume-row-item row-grey">
+                        <div class="icon-resume-box">⏳</div>
+                        <div class="text-resume-box"><h5>Free Time</h5><p>Time: 04.00 - 08.00</p></div>
+                        <div class="paw-badge">🐾</div>
+                    </div>
+                    <!-- Baris 2: Physical Exercise -->
+                    <div class="resume-row-item row-purple">
+                        <div class="icon-resume-box">🚲</div>
+                        <div class="text-resume-box"><h5>Physical Exercise</h5><p>Time: 08.00 - 10.15</p></div>
+                        <div class="paw-badge">🐾</div>
+                    </div>
+                    <!-- Baris 3: Study & Learning -->
+                    <div class="resume-row-item row-red">
+                        <div class="icon-resume-box">📕</div>
+                        <div class="text-resume-box"><h5>Study & Learning</h5><p>Time: 11.30 - 12.30 & 16.00 - 17.00</p></div>
+                        <div class="paw-badge">🐾</div>
+                    </div>
+                    <!-- Baris 4: Health Activity -->
+                    <div class="resume-row-item row-green">
+                        <div class="icon-resume-box">💖</div>
+                        <div class="text-resume-box"><h5>Health Activity</h5><p>Time: 13.00 - 15.00 & 21.30 - 05.00</p></div>
+                        <div class="paw-badge">🐾</div>
+                    </div>
+                    <!-- Baris 5: Hangout -->
+                    <div class="resume-row-item row-yellow">
+                        <div class="icon-resume-box">🎮</div>
+                        <div class="text-resume-box"><h5>Hangout</h5><p>Time: 17.00 - 21.00</p></div>
+                        <div class="paw-badge">🐾</div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- Penutup recap-scroll-content -->
+
+</body>
+</html>

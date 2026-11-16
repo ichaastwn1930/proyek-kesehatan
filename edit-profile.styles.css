@@ -1,0 +1,301 @@
+/* ======================================================== */
+/*  URUTAN FINAL AMAN 100% UNTUK FILE CSS EDIT PROFILE       */
+/* ======================================================== */
+
+/* --- 1. LAYOUT UTAMA EMULATOR SMARTPHONE --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #43006B; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.phone-screen {
+    width: 412px;
+    height: 915px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    position: relative; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px 5px 30px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+    z-index: 3;
+    position: relative;
+}
+.status-icons { display: flex; gap: 5px; font-size: 12px; }
+
+.top-nav-profile {
+    display: flex;
+    align-items: center;
+    padding: 15px 24px;
+    position: relative;
+    z-index: 3;
+    margin-top: 15px;
+}
+.back-btn-link { text-decoration: none; font-size: 24px; cursor: pointer; color: #43006B; }
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #43006B;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    padding-right: 30px;
+}
+
+/* --- 2. SCROLL CONTENT (MEMAKSA LAYOUT BERBARIS TEGAK LURUS DI TENGAH) --- */
+.profile-scroll-content {
+    flex: 1 !important;
+    width: 100% !important;
+    overflow-y: auto !important; 
+    padding: 15px 24px 40px 24px !important; 
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    
+    /* DUA BARIS SIHIR INI WAJIB UNTUK MENGUNCI SEMUA ELEMEN DI TENGAH SEMPURNA */
+    align-items: center !important;
+    justify-content: flex-start !important;
+    
+    box-sizing: border-box !important;
+}
+.profile-scroll-content::-webkit-scrollbar { display: none !important; }
+
+/* --- 3. BINGKAI FOTO PROFIL UTAMA (TERKUNCI DI TENGAH & ANTI-KIRI) --- */
+.avatar-container-large {
+    width: 170px !important;
+    height: 170px !important;
+    margin-top: 25px !important;
+    margin-bottom: 30px !important;
+    position: relative !important;
+    
+    /* Memaksa gambar bulat di dalamnya tetap berada di tengah poros bingkai */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important; 
+    z-index: 5 !important;
+}
+
+.main-profile-img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 35px !important;
+    box-shadow: 0 10px 30px rgba(67, 0, 107, 0.15) !important; 
+    object-fit: cover !important; 
+    display: block !important;
+    transition: all 0.35s ease !important;
+}
+
+/* FOTO PROFIL OTOMATIS MENGECIL PAS USER LAGI MENGETIK DATA FORM */
+.profile-scroll-content:focus-within #avatarContainer {
+    width: 110px !important;   
+    height: 110px !important;  
+    margin-top: 10px !important;
+    margin-bottom: 15px !important;
+}
+.profile-scroll-content:focus-within .main-profile-img {
+    border-radius: 24px !important; 
+}
+
+/* TOMBOL KAMERA UNGU DI POJOK FOTO */
+.camera-badge-btn {
+    position: absolute !important;
+    bottom: 5px !important;
+    right: -5px !important;
+    width: 38px !important;
+    height: 38px !important;
+    background-color: #43006B !important;
+    border: 2px solid white !important;
+    border-radius: 12px !important;
+    color: white !important;
+    font-size: 16px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
+    padding: 0 !important;
+    z-index: 9999 !important; 
+}
+
+/* --- 4. BINGKAI KARTU DATA DIRI (EFEK GLASSMORPHISM BERBAYANG JELAS) --- */
+.profile-card-frame {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 24px 20px !important;
+    margin-bottom: 30px !important;
+    
+    /* Menggunakan warna putih kristal berkabut transparan tipis agar memotong awan figma */
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    
+    border-radius: 28px !important; 
+    box-shadow: 0 12px 35px rgba(67, 0, 107, 0.08) !important; 
+    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+    z-index: 4 !important;
+}
+
+/* --- 5. DEKORASI LIST BARIS FORMULIR DI DALAM KARTU --- */
+.profile-info-list {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important; 
+}
+
+.info-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important; 
+    padding-bottom: 4px !important; 
+    border-bottom: 1.5px solid #fff59d !important; 
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.info-label {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #43006B !important; 
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.profile-input-field {
+    width: 90% !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #c4a1ff !important; 
+    padding: 2px 0 6px 0 !important;
+}
+.profile-input-field::placeholder {
+    color: #d1b3ff !important; 
+    font-size: 10px !important; 
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+    color: #d1b3ff !important; 
+    font-size: 10px !important;
+    font-weight: 500 !important;
+}
+input[type="date"]:valid::-webkit-datetime-edit {
+    color: #c4a1ff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.input-wrapper {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+.action-icon {
+    font-size: 14px !important;
+    cursor: pointer !important;
+    opacity: 0.6 !important;
+    transition: all 0.2s ease !important;
+    padding-bottom: 4px !important;
+    user-select: none !important;
+}
+.action-icon:hover { opacity: 1 !important; transform: scale(1.15) !important; }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent !important;
+    bottom: 0 !important; color: transparent !important; cursor: pointer !important; height: auto !important;
+    left: 0 !important; position: absolute !important; right: 0 !important; top: 0 !important; width: auto !important;
+    z-index: 2 !important;
+}
+
+.email-error-text {
+    display: none !important; 
+    color: #ef5350 !important; 
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif !important;
+    margin-top: 6px !important;
+}
+
+/* --- 6. KOTAK POP-UP PILIHAN MENU KAMU --- */
+.photo-options-menu {
+    display: none; 
+    position: absolute !important;
+    bottom: -105px !important; 
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 155px !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 16px !important;
+    padding: 10px 8px !important;
+    box-shadow: 0 10px 25px rgba(67, 0, 107, 0.15) !important;
+    box-sizing: border-box !important;
+    z-index: 99 !important; 
+    animation: popUpFade 0.2s ease-out !important;
+}
+
+.menu-opt-btn {
+    width: 100% !important;
+    background: none !important;
+    border: none !important;
+    padding: 8px 5px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    border-radius: 10px !important;
+    display: block !important;
+}
+.menu-opt-btn:hover { background: rgba(67, 0, 107, 0.08) !important; }
+.text-purple { color: #43006B !important; }
+
+@keyframes popUpFade {
+    from { opacity: 0; transform: translate(-50%, 10px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+
+.toast-save-notif {
+    display: none;
+    position: absolute !important;
+    bottom: 100px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+    color: #43006B !important;
+    padding: 10px 20px !important;
+    border-radius: 14px !important;
+    font-size: 12px !important;
+    font-weight: 700;
+    z-index: 9999 !important;
+    white-space: nowrap !important;
+}

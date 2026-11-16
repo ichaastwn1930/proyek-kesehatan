@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Goals - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS khusus halaman goals -->
+    <link rel="stylesheet" href="goals-styles.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- BACKGROUND AWAN DEKORASI -->
+        <img src="awanbawah.png" alt="Awan Atas" class="awan-top-goals">
+
+            <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+        
+        <!-- 1. Tombol Back Mandiri (Berdiri Bebas di Atas Awan Tanpa Terikat) -->
+        <a href="home.html" class="back-btn-link-独立">👈</a>
+        
+        <!-- 2. Kontainer Khusus Papan Judul Ungu Saja (Fokus Presisi di Tengah) -->
+        <div class="top-nav-goals">
+            <div class="header-banner-papan">
+                <span class="text-di-atas-papan">Today's Goals</span>
+            </div>
+        </div>
+
+        <!-- AREA KONTEN TENGAH Khas FIGMA KAMU -->
+        <div class="goals-scroll-content">
+            
+            <!-- AVATAR KUCING AKTOR UTAMA -->
+            <div class="cat-focus-avatar">
+                <img src="kucing1.png" alt="Fuyu Cat Focus" class="img-kucing-focus">
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- BLOK 1: FOCUS (KARTU SELECTION AKTIVITAS TRACKER)        -->
+            <!-- ======================================================== -->
+            <div class="activity-tracker-card">
+                <h4>What are you focusing on?</h4>
+                <div class="activity-row-buttons">
+                    <!-- Setiap tombol mengirimkan nama file gambar dan nama aktivitasnya -->
+                    <button class="act-btn-circle" onclick="pemicuKlikAktivitasFuyu('bike1.png', 'Olahraga Riding')"><img src="bike1.png" alt="Bike"></button>
+                    <button class="act-btn-circle" onclick="pemicuKlikAktivitasFuyu('book1.png', 'Membaca Buku')"><img src="book1.png" alt="Book"></button>
+                    <button class="act-btn-circle" onclick="pemicuKlikAktivitasFuyu('game1.png', 'Bermain Game')"><img src="game1.png" alt="Game"></button>
+                    <button class="act-btn-circle" onclick="pemicuKlikAktivitasFuyu('health1.png', 'Self Care Kesehatan')"><img src="health1.png" alt="Health"></button>
+                    <button class="act-btn-circle plus-btn">➕</button>
+                </div>
+            </div>
+
+                       <!-- ======================================================== -->
+            <!-- BLOK 2: LIST PLAN (REVISI DROPDOWN INTERAKTIF)           -->
+            <!-- ======================================================== -->
+            <div class="list-plan-container-card" id="kartuListPlanUtama" style="display: none;">
+                <div class="main-active-plan-zone" style="position: relative;">
+                    <span class="plan-mini-badge">Aktivitas Utama Saat Ini</span>
+                    <div class="main-active-row">
+                        <div class="active-icon-box" id="wadahIkonAktifUtama">
+                            <span style="font-size: 16px;">💤</span>
+                        </div>
+                        <div class="active-text-details">
+                            <h5 id="labelNamaAktivitasAktif">Belum ada aktivitas</h5>
+                            <p id="labelDurasiAktivitasAktif">Atur waktu dan klik start di bawah!</p>
+                        </div>
+                    </div>
+                    <!-- TOMBOL DROPDOWN v TIPIS BARU SESUAI FOTO CONTOHMU -->
+                    <button id="btnDropdownPlan" class="fuyu-dropdown-toggle-btn" onclick="toggleMekarkanAntreanBawah(); return false;" style="display: none;">v</button>
+
+                <!-- Area ini yang akan disembunyikan/ditampilkan secara interaktif saat tombol v diklik -->
+                <div id="wrapperAntreanOtomatis" style="display: none;">
+                    <!-- Pembatas Garis Putus-Putus Halus -->
+                    <div class="plan-dashed-divider"></div>
+                    
+                    <div class="next-queue-plan-zone">
+                        <span class="plan-mini-badge">List Rencana Selanjutnya</span>
+                        <div class="queue-icons-row" id="barisanAntreanIkonRencana">
+                            <!-- Ikon antrean akan lahir di sini -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ======================================================== -->
+            <!-- BLOK 3: TIME (KARTU TIMER DOWNSIZE LEBIH KECIL & DI BAWAH)-->
+            <!-- ======================================================== -->
+            <div class="timer-control-card downsized-timer-card">
+                <span class="badge-focus-label">Focus Time</span>
+                
+                <div class="time-adjuster-row">
+                    <button class="adjust-btn btn-minus" onclick="ubahMenit(-1)">➖</button>
+                    <div class="display-time-container">
+                        <span id="timerNumberDisplay">10</span>
+                        <p class="sub-minutes-label">Minutes</p>
+                    </div>
+                    <button class="adjust-btn btn-plus" onclick="ubahMenit(1)">➕</button>
+                </div>
+
+                <div class="quick-minutes-row">
+                    <span class="quick-chip active" onclick="setMenitCepat(5, this)">5m</span>
+                    <span class="quick-chip" onclick="setMenitCepat(10, this)">10m</span>
+                    <span class="quick-chip" onclick="setMenitCepat(15, this)">15m</span>
+                    <span class="quick-chip" onclick="setMenitCepat(30, this)">30m</span>
+                    <span class="quick-chip" onclick="setMenitCepat(45, this)">45m</span>
+                    <span class="quick-chip" onclick="setMenitCepat(60, this)">60m</span>
+                </div>
+
+                <div class="action-buttons-stack">
+                    <button class="main-action-btn yellow-btn-focus" id="btnFocusSession" onclick="mulaiTimerSesi()">Start Focus Session</button>
+                </div>
+            </div>
+
+        </div> <!-- Penutup goals-scroll-content -->
+
+        <!-- ======================================================== -->
+        <!-- POP-UP KUSTOM IN-APP: KONFIRMASI TAMBAH LIST SELANJUTNYA -->
+        <!-- ======================================================== -->
+        <div id="popupKonfirmasiRencana" class="fuyu-modal-plan-overlay" style="display: none;">
+            <div class="fuyu-modal-plan-box">
+                <div class="fuyu-modal-plan-body">
+                    <span style="font-size: 28px; display: block; margin-bottom: 8px;">📋</span>
+                    <h4>Tambahkan ini ke list selanjutnya?</h4>
+                    <p id="teksNamaAktivitasPopUp" style="margin: 0; font-size: 12px; color: #b388ff; font-weight: 600;"></p>
+                </div>
+                <div class="fuyu-modal-plan-footer">
+                    <button class="btn-plan-action btn-plan-no" onclick="eksekusiJawabanRencana(false)">Tidak</button>
+                    <button class="btn-plan-action btn-plan-yes" onclick="eksekusiJawabanRencana(true)">Iya</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- Penutup phone-screen -->
+
+       <!-- LOGIKA MURNI INTERAKTIF PLANNER & TIMER SINKRON -->
+    <script>
+        var durasiMenit = 10;
+        var intervalTimer = null;
+        var sedangBerjalan = false;
+        
+        // Memori penampung data rencana aktivitas
+        var aktivitasUtamaSaatIni = null;
+        var daftarAntreanSelanjutnya = [];
+        var dataKlikSementara = { fileGambar: "", namaAktivitas: "" };
+
+        // 1. LOGIKA INTERAKTIF PLACEMENT LIST PLAN SINKRON
+        function pemicuKlikAktivitasFuyu(fileGambar, namaAktivitas) {
+            if (sedangBerjalan) return; // Kunci jika sesi fokus sedang berjalan mundur
+
+            // Simpan data ikon yang diklik ke penampung memori sementara
+            dataKlikSementara.fileGambar = fileGambar;
+            dataKlikSementara.namaAktivitas = namaAktivitas;
+
+            // Aturan UX: Jika BELUM ada aktivitas utama, langsung daftarkan sebagai Aktivitas Utama Saat Ini!
+            if (aktivitasUtamaSaatIni === null) {
+                aktivitasUtamaSaatIni = { fileGambar: fileGambar, namaAktivitas: namaAktivitas };
+                
+                // Nyalakan visual tombol aktif di atas
+                pilihHighlightTombolAktivitas(fileGambar);
+                
+                // Gambar ulang visual list plan tengah
+                renderUlangVisualListPlan();
+            } else {
+                // Aturan UX Ganda: Jika aktivitas utama sudah terisi, tanyakan lewat Pop-Up kustom in-app!
+                document.getElementById('teksNamaAktivitasPopUp').innerText = "Aktivitas: " + namaAktivitas;
+                document.getElementById('popupKonfirmasiRencana').style.display = 'flex';
+            }
+        }
+
+        // Fungsi mengeksekusi jawaban Iya / Tidak dari Pop-Up kustom
+        function eksekusiJawabanRencana(jawabanIya) {
+            document.getElementById('popupKonfirmasiRencana').style.display = 'none';
+            
+            if (jawabanIya && dataKlikSementara.fileGambar !== "") {
+                // Masukkan ke array antrean list rencana selanjutnya
+                daftarAntreanSelanjutnya.push({
+                    fileGambar: dataKlikSementara.fileGambar,
+                    namaAktivitas: dataKlikSementara.namaAktivitas
+                });
+                
+                // Gambar ulang susunan ikon antrean di kotak tengah
+                renderUlangVisualListPlan();
+            }
+            
+            // Reset penampung klik sementara
+            dataKlikSementara = { fileGambar: "", namaAktivitas: "" };
+        }
+
+              // ========================================================
+        // INDUK REVISI: FUNGSIONAL CANCEL / HAPUS ANTREAN SAAT IKON DIKLIK
+        // ========================================================
+        function renderUlangVisualListPlan() {
+            var wadahIkonUtama = document.getElementById('wadahIkonAktifUtama');
+            var labelNamaUtama = document.getElementById('labelNamaAktivitasAktif');
+            var labelDurasiUtama = document.getElementById('labelDurasiAktivitasAktif');
+            var wadahAntrean = document.getElementById('barisanAntreanIkonRencana');
+            
+            var kartuListPlan = document.getElementById('kartuListPlanUtama');
+            var btnDropdown = document.getElementById('btnDropdownPlan');
+            var wrapperAntrean = document.getElementById('wrapperAntreanOtomatis');
+
+            // 1. Gambar Ulang Aktivitas Utama di Atas
+            if (aktivitasUtamaSaatIni !== null) {
+                kartuListPlan.style.display = 'block';
+                wadahIkonUtama.innerHTML = `<img src="${aktivitasUtamaSaatIni.fileGambar}" style="width:24px; height:24px; object-fit:contain;">`;
+                labelNamaUtama.innerText = aktivitasUtamaSaatIni.namaAktivitas;
+                labelDurasiUtama.innerText = "Target waktu: " + durasiMenit + " Menit";
+            } else {
+                kartuListPlan.style.display = 'none';
+            }
+
+            // 2. KUNCI JUARA UX: Gambar Barisan Antrean yang Bisa Diklik Cancel
+            if (daftarAntreanSelanjutnya.length > 0) {
+                // Pastikan tombol panah dropdown v kecil kamu muncul
+                btnDropdown.style.display = 'flex';
+                
+                // Bersihkan wadah antrean sebelum digambar ulang
+                wadahAntrean.innerHTML = "";
+                
+                daftarAntreanSelanjutnya.forEach(function(item, indeks) {
+                    var kotakKecilAntrean = document.createElement('div');
+                    kotakKecilAntrean.className = 'queue-mini-icon-box';
+                    kotakKecilAntrean.style.cursor = 'pointer'; // Beri indikasi penunjuk tangan agar user tahu bisa diklik
+                    kotakKecilAntrean.title = "Klik untuk batalkan kegiatan ini";
+                    
+                    // SUNTIKKAN FUNGSI KLIK: Kirimkan nomor urutan indeks ke mesin penghapus antrean
+                    kotakKecilAntrean.onclick = function(e) {
+                        e.stopPropagation(); // Mencegah bentrok klik dengan penutup kontainer luar
+                        batalkanRencanaAntreanSpesifik(indeks);
+                    };
+
+                    kotakKecilAntrean.innerHTML = `<img src="${item.fileGambar}" style="width:18px; height:18px; object-fit:contain;">`;
+                    wadahAntrean.appendChild(kotakKecilAntrean);
+                });
+            } else {
+                // Jika seluruh antrean sudah habis dibatalkan user, sembunyikan lantainya secara otomatis
+                btnDropdown.style.display = 'none';
+                wrapperAntrean.style.display = 'none';
+                btnDropdown.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // FUNGSI BARU: Menghapus item rencana spesifik dari array berdasarkan ikon yang diketuk
+        function batalkanRencanaAntreanSpesifik(nomorIndeks) {
+            // Potong dan buang 1 item dari daftar antrean sesuai posisi urutannya
+            daftarAntreanSelanjutnya.splice(nomorIndeks, 1);
+            
+            // Segarkan ulang visual grid layar secara live detik itu juga!
+            renderUlangVisualListPlan();
+        }
+
+        // Fungsi pemicu saklar buka-tutup lembaran antrean saat tombol v diklik
+        function toggleMekarkanAntreanBawah() {
+            var wrapperAntrean = document.getElementById('wrapperAntreanOtomatis');
+            var btnDropdown = document.getElementById('btnDropdownPlan');
+            
+            if (wrapperAntrean.style.display === 'none') {
+                // Mekarkan meluncur ke bawah
+                wrapperAntrean.style.display = 'block';
+                btnDropdown.style.transform = 'rotate(180deg)'; // Efek memutar anak panah biar estetik
+                btnDropdown.style.color = "#43006B"; // Berubah warna penanda aktif
+            } else {
+                // Lipat tutup kembali ke atas
+                wrapperAntrean.style.display = 'none';
+                btnDropdown.style.transform = 'rotate(0deg)';
+                btnDropdown.style.color = "#ef4444";
+            }
+        }
+
+
+        // Membantu memberikan warna kuning aktif di tombol bundar atas
+        function pilihHighlightTombolAktivitas(fileGambar) {
+            document.querySelectorAll('.act-btn-circle').forEach(function(btn) {
+                btn.classList.remove('active');
+                var img = btn.querySelector('img');
+                if (img && img.getAttribute('src') === fileGambar) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // D. LOGIKA INTERAKTIF HITUNG MUNDUR TIMER TIMER CONTROL
+        function ubahMenit(jumlah) {
+            if (sedangBerjalan) return; 
+            durasiMenit += jumlah;
+            if (durasiMenit < 1) durasiMenit = 1; 
+            document.getElementById('timerNumberDisplay').innerText = durasiMenit;
+
+            // Perbarui keterangan durasi di kotak tengah secara live saat menit di-klik berubah
+            if (aktivitasUtamaSaatIni !== null) {
+                document.getElementById('labelDurasiAktivitasAktif').innerText = "Target waktu: " + durasiMenit + " Menit";
+            }
+
+            document.querySelectorAll('.quick-chip').forEach(chip => chip.classList.remove('active'));
+        }
+
+        function setMenitCepat(menit, elemen) {
+            if (sedangBerjalan) return;
+            durasiMenit = menit;
+            document.getElementById('timerNumberDisplay').innerText = durasiMenit;
+            
+            if (aktivitasUtamaSaatIni !== null) {
+                document.getElementById('labelDurasiAktivitasAktif').innerText = "Target waktu: " + durasiMenit + " Menit";
+            }
+
+            document.querySelectorAll('.quick-chip').forEach(chip => chip.classList.remove('active'));
+            elemen.classList.add('active');
+        }
+
+        function mulaiTimerSesi() {
+            var tombol = document.getElementById('btnFocusSession');
+            var displayAngka = document.getElementById('timerNumberDisplay');
+            
+            if (aktivitasUtamaSaatIni === null) {
+                alert("Pilih jenis fokus kegiatanmu di atas terlebih dahulu, Fuyu! 🐾");
+                return;
+            }
+
+            if (!sedangBerjalan) {
+                sedangBerjalan = true;
+                tombol.innerText = "Pause Session";
+                tombol.style.backgroundColor = "#ffcdd2"; 
+                tombol.style.color = "#c62828";
+                
+                var totalDetik = durasiMenit * 60;
+                
+                intervalTimer = setInterval(function() {
+                    totalDetik--;
+                    var sisaMenit = Math.ceil(totalDetik / 60);
+                    displayAngka.innerText = sisaMenit;
+                    
+                    if (aktivitasUtamaSaatIni !== null) {
+                        document.getElementById('labelDurasiAktivitasAktif').innerText = "Sedang berlangsung aktif... (" + sisaMenit + "m sisa)";
+                    }
+                    
+                    if (totalDetik <= 0) {
+                        clearInterval(intervalTimer);
+                        alert("Hore! Sesi fokus '" + aktivitasUtamaSaatIni.namaAktivitas + "' selesai. Kerja bagus, Fuyu! 🎉🐾");
+                        
+                        // Sistem Rencana Otomatis: Majukan antrean list selanjutnya jika ada!
+                        if (daftarAntreanSelanjutnya.length > 0) {
+                            aktivitasUtamaSaatIni = daftarAntreanSelanjutnya.shift(); // Ambil urutan kedua jadi kesatu
+                            pilihHighlightTombolAktivitas(aktivitasUtamaSaatIni.fileGambar);
+                        } else {
+                            aktivitasUtamaSaatIni = null;
+                            document.querySelectorAll('.act-btn-circle').forEach(btn => btn.classList.remove('active'));
+                        }
+                        
+                        resetTimerOtomatis();
+                        renderUlangVisualListPlan();
+                    }
+                }, 1000); 
+            } else {
+                clearInterval(intervalTimer);
+                sedangBerjalan = false;
+                tombol.innerText = "Start Focus Session";
+                tombol.style.backgroundColor = "#fffee4"; 
+                tombol.style.color = "#43006B";
+                if (aktivitasUtamaSaatIni !== null) {
+                    document.getElementById('labelDurasiAktivitasAktif').innerText = "Sesi di-pause. Target waktu: " + durasiMenit + " Menit";
+                }
+            }
+        }
+
+        function resetTimerOtomatis() {
+            sedangBerjalan = false;
+            clearInterval(intervalTimer);
+            document.getElementById('btnFocusSession').innerText = "Start Focus Session";
+            document.getElementById('btnFocusSession').style.backgroundColor = "#fffee4";
+            document.getElementById('btnFocusSession').style.color = "#43006B";
+            document.getElementById('timerNumberDisplay').innerText = durasiMenit;
+        }
+    </script>
+
+</body>
+</html>

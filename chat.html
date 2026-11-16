@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Chat - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menghubungkan ke file CSS khusus halaman chat -->
+    <link rel="stylesheet" href="chat-style.css">
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- REVISI AWAN ASIMETRIS KANAN ATAS & KIRI BAWAH -->
+        <img src="awankanan.png" alt="Awan Kanan Atas" class="awan-fuyu-kanan-atas">
+        <img src="awankanan.png" alt="Awan Kiri Bawah" class="awan-fuyu-kiri-bawah">
+
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- TOMBOL BACK MANDIRI DI KIRI ATAS AWAN -->
+        <a href="home.html" class="back-btn-link-chat-independen">👈</a>
+
+        <!-- TOP BAR: PAPAN GANTUNG ROOM CHAT -->
+        <div class="top-nav-chat">
+            <div class="header-banner-papan-chat">
+                <span class="text-di-atas-papan-chat">Room Chat</span>
+            </div>
+        </div>
+
+        <!-- AREA KONTEN TENGAH GERBANG RUANG CHAT -->
+        <div class="chat-scroll-content">
+            
+            <!-- KUNCI UTAMA: WADAH UTAMA KOTAK UNGU TRANSPARAN SEPERTI FIGMA KAMU -->
+            <div class="fuyu-figma-purple-card">
+                
+            <!-- KAMAR 1: PARTNER'S ROOM (ATAS) -->
+            <div class="door-section-block jumbo-door-gap">
+                <span class="room-title-badge">Partner's Room</span>
+                <div class="fuyu-hanging-lamp">💡</div>
+                
+                <div class="fuyu-door-frame jumbo-size-door">
+                    <div class="door-leaf">
+                        <!-- KUNCI 1: Pastikan namanya diganti menjadi eksekusiLampuDanPindahKamar -->
+                        <div class="paw-badge-handle-clickable" onclick="eksekusiLampuDanPindahKamar('ai', this)">
+                            <img src="paw.png" alt="Paw Click" class="img-paw-fuyu">
+                        </div>
+                    </div>
+                </div>
+                
+                <img src="tanaman.png" alt="Plant Left" class="fuyu-custom-plant plant-left">
+                <img src="tanaman.png" alt="Plant Right" class="fuyu-custom-plant plant-right">
+            </div>
+
+            <!-- KAMAR 2: CONSULT'S ROOM (BAWAH) -->
+            <div class="door-section-block">
+                <span class="room-title-badge">Consult's Room</span>
+                <div class="fuyu-hanging-lamp">💡</div>
+                
+                <div class="fuyu-door-frame jumbo-size-door">
+                    <div class="door-leaf">
+                        <!-- KUNCI 2: Samakan juga namanya menjadi eksekusiLampuDanPindahKamar -->
+                        <div class="paw-badge-handle-clickable" onclick="eksekusiLampuDanPindahKamar('real', this)">
+                            <img src="paw.png" alt="Paw Click" class="img-paw-fuyu">
+                        </div>
+                    </div>
+                </div>
+                
+                <img src="tanaman.png" alt="Plant Left" class="fuyu-custom-plant plant-left">
+                <img src="tanaman.png" alt="Plant Right" class="fuyu-custom-plant plant-right">
+            </div>
+
+        </div> <!-- Penutup chat-scroll-content -->
+
+        <!-- ======================================================== -->
+        <!-- POP-UP SAMBUTAN IN-APP KUSTOM (GANTI ALERT LAMA)         -->
+        <!-- ======================================================== -->
+        <div id="popupSambutanChat" class="fuyu-modal-plan-overlay" style="display: none; z-index: 50000;">
+            <div class="fuyu-modal-plan-box" style="width: 80%; border-radius: 24px; padding: 20px;">
+                <div class="fuyu-modal-plan-body" style="padding: 10px;">
+                    <span id="ikonSambutanDinamis" style="font-size: 32px; display: block; margin-bottom: 10px;">🐱</span>
+                    <h4 id="judulSambutanDinamis" style="font-size: 14px; color: #43006B; margin-bottom: 6px; font-weight: 700;">Connecting...</h4>
+                    <p id="teksSambutanDinamis" style="margin: 0; font-size: 11px; color: #9e9e9e; line-height: 1.4;"></p>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        // Fungsi utama menyalakan lampu teras dan memanggil pop-up sambutan in-app smartphone
+        function eksekusiLampuDanPindahKamar(jenisKamar, elemenPaw) {
+            // Temukan kontainer pembungkus teras pintu terdekat (.door-section-block)
+            var wadahKamarBesar = elemenPaw.closest('.door-section-block');
+            
+            // 1. Nyalakan kelas animasi kilauan neon pada lampu gantung di seksi tersebut
+            if (wadahKamarBesar) {
+                wadahKamarBesar.classList.add('nyala-aktif');
+            }
+            
+            // Tarik komponen elemen Pop-Up Sambutan In-App milikmu
+            var popup = document.getElementById('popupSambutanChat');
+            var ikon = document.getElementById('ikonSambutanDinamis');
+            var judul = document.getElementById('judulSambutanDinamis');
+            var teks = document.getElementById('teksSambutanDinamis');
+            
+            // 2. Suntikkan teks sambutan dinamis di dalam layar HP sesuai pintu paw yang diketuk
+            if (jenisKamar === 'ai') {
+                if (ikon) ikon.innerText = "💬";
+                if (judul) judul.innerText = "Partner's Room";
+                if (teks) teks.innerText = "Membuka Partner's Room... Yuk ngobrol seru bareng AI Fuyu! 🐱🐾";
+            } else if (jenisKamar === 'real') {
+                if (ikon) ikon.innerText = "🩺";
+                if (judul) judul.innerText = "Consult's Room";
+                if (teks) teks.innerText = "Membuka Consult's Room... Menghubungkan kamu ke AI Konsultan Kesehatan Pintar! 🐾";
+            }
+            
+            // 3. Munculkan Pop-up sambutan mewah di dalam layar HP setelah jeda lampu menyala
+            setTimeout(function() {
+                if (popup) {
+                    popup.style.display = 'flex';
+                }
+                
+                // Jeda loading screen selama 1.5 detik sebagai transisi premium, baru meluncur pindah halaman secara gaib!
+                setTimeout(function() {
+                    if (popup) popup.style.display = 'none';
+                    if (wadahKamarBesar) wadahKamarBesar.classList.remove('nyala-aktif');
+                    
+                    // ========================================================
+                    // KUNCI SAKLAR BARU: LEMPAR LANGSUNG KE DUA FILE BERKAS BERBEDA
+                    // ========================================================
+                    if (jenisKamar === 'ai') {
+                        window.location.href = 'chat.ai.html';      /* Kamar Atas -> File Khusus Curhat General */
+                    } else if (jenisKamar === 'real') {
+                        window.location.href = 'chat.consult.html'; /* Kamar Bawah -> File Khusus Medis Psikolog */
+                    }
+                }, 1500);
+            }, 300);
+        }
+    </script>
+</body>
+</html>

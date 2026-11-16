@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Medical Consultant - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================================== */
+        /*  GAYA KOSMETIK RUANG KONSULTASI MEDIS: chat-consult.html */
+        /* ======================================================== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #43006B; 
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0;
+        }
+
+        .phone-screen {
+            width: 412px; height: 915px;
+            background-color: #e2d2ff; 
+            border-radius: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden; display: flex;
+            flex-direction: column; box-sizing: border-box;
+        }
+
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px 5px 30px; font-weight: 700; font-size: 14px; color: #43006B;
+            z-index: 10; position: relative;
+        }
+        .status-icons { display: flex; gap: 5px; font-size: 12px; }
+
+        /* HEADER CHAT BAR ATAS GLOSSY */
+        .chat-header-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1.5px solid rgba(187, 137, 245, 0.4);
+            padding: 12px 24px; display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 4px 20px rgba(67, 0, 107, 0.05); z-index: 5;
+            border-radius: 0 0 24px 24px;
+        }
+        .back-to-room-btn {
+            text-decoration: none; font-size: 20px; color: #43006B; font-weight: 700; cursor: pointer;
+        }
+        .avatar-circle-profile {
+            width: 44px; height: 44px; background: #ffffff;
+            border: 2px solid #b388ff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 10px rgba(67, 0, 107, 0.05);
+        }
+        .avatar-circle-profile img { width: 75%; height: 75%; object-fit: contain; }
+        .header-chat-info h4 { margin: 0; font-size: 14px; font-weight: 700; color: #43006B; }
+        .header-chat-info p { margin: 1px 0 0 0; font-size: 10px; color: #22c55e; font-weight: 600; }
+
+        /* AREA GELEMBUNG OBROLAN TENGAH */
+        .chat-messages-body-zone {
+            flex: 1; overflow-y: auto; padding: 24px 20px;
+            display: flex; flex-direction: column; gap: 16px;
+            box-sizing: border-box;
+        }
+        .chat-messages-body-zone::-webkit-scrollbar { display: none; }
+
+              /* ======================================================== */
+        /*  FIX PERFECT: MOOD BOX GLOSSY + BORDER TEGAS KHAS FUYU   */
+        /* ======================================================== */
+        .fuyu-figma-mood-box {
+            width: 100% !important;
+            
+            /* Warna ungu transparan kabut agar BG dasar menembus keluar */
+            background: rgba(249, 248, 250, 0.534) !important; 
+            
+            /* Efek kaca kabur premium anti-flat */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            
+            /* KUNCI REVISI: Mengubah border putih menjadi BORDER UNGU PEKAT TEGAS solid 2px */
+            border: 2px solid #43006B !important;
+            
+            border-radius: 32px !important; 
+            padding: 24px 15px !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            
+            /* Efek bayangan halus agar kotak mencuat melayang timbul */
+            box-shadow: 0 15px 35px rgba(67, 0, 107, 0.05) !important;
+            
+            margin-bottom: 25px !important;
+            animation: mekarMood 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+        }
+
+        @keyframes mekarMood {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .mood-box-header h4 {
+            margin: 0 !important; font-size: 16px !important; font-weight: 700 !important; color: #43006B !important;
+        }
+        .mood-box-header p {
+            margin: 2px 0 16px 0 !important; font-size: 14px !important; font-weight: 700 !important; color: #43006B !important;
+        }
+
+        .mood-box-buttons-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 12px 20px !important;
+            padding: 0 15px !important;
+        }
+
+        .mood-quick-chip {
+            background-color: #c9b3ff !important; 
+            border: none !important;
+            color: #43006B !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            padding: 10px 0 !important;
+            border-radius: 20px !important; 
+            cursor: pointer !important;
+            text-align: center !important;
+            transition: all 0.2s ease !important;
+        }
+        .mood-quick-chip:hover {
+            transform: scale(1.05) !important;
+            background-color: #ffffff !important;
+        }
+
+        /* GELEMBUNG CHAT KANAN (USER) */
+        .msg-bubble-row.user-side { align-self: flex-end; width: 75%; display: flex; justify-content: flex-end; }
+        .msg-bubble-row.user-side .bubble-text {
+            background-color: #c9b3ff; 
+            color: #43006B; font-size: 12.5px; font-weight: 500;
+            padding: 14px 18px; border-radius: 20px 20px 4px 20px; 
+            box-shadow: 0 6px 15px rgba(67, 0, 107, 0.04); text-align: left;
+        }
+
+        /* GELEMBUNG CHAT KIRI (AI INTERAKTIF) */
+        .msg-bubble-row.ai-side { align-self: flex-start; width: 85%; display: flex; flex-direction: column; gap: 4px; }
+        .msg-bubble-row.ai-side .bubble-text {
+            background-color: #8c76b8; 
+            color: #ffffff; font-size: 13px; font-weight: 500; line-height: 1.5;
+            padding: 16px 20px; border-radius: 4px 24px 24px 24px; 
+            box-shadow: 0 8px 25px rgba(67, 0, 107, 0.08); text-align: left;
+        }
+        .chat-time-stamp { font-size: 9px; color: #b388ff; font-weight: 500; margin-left: 6px; margin-top: 2px; }
+
+        /* TOMBOL SELEKSI RUJUKAN PROFESIONAL KRITIS */
+        .professional-link-card-btn {
+            background-color: #fffee4 !important; color: #c62828 !important; font-size: 12px !important; font-weight: 700 !important;
+            border: 2px solid #ef4444 !important; padding: 12px !important; border-radius: 16px !important; width: 100% !important;
+            cursor: pointer !important; margin-top: 15px !important; text-align: center !important;
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.1) !important; display: block !important;
+        }
+
+        /* FOOTER INPUT BAR BAWAH KAPSUL KUNING */
+        .chat-bottom-input-bar-container {
+            padding: 15px 20px 25px 20px; display: flex; align-items: center; gap: 10px;
+            background: linear-gradient(180deg, transparent, rgba(67, 0, 107, 0.05)); z-index: 5;
+        }
+        
+        .typing-capsule-input-box {
+            flex: 1; height: 54px; background-color: #fffee4; 
+            border: 1.5px solid rgba(187, 137, 245, 0.5); border-radius: 27px;
+            padding: 0 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 8px 20px rgba(67, 0, 107, 0.06);
+        }
+        .typing-capsule-input-box input {
+            width: 85%; background: none; border: none; outline: none;
+            font-family: 'Poppins', sans-serif; font-size: 13px; color: #43006B; font-weight: 500;
+        }
+        .typing-capsule-input-box input::placeholder { color: #b388ff; opacity: 0.7; }
+        
+        .send-arrow-btn {
+            background: none; border: none; font-size: 18px; color: #43006B; cursor: pointer;
+            transition: transform 0.2s ease; display: flex; align-items: center;
+        }
+        .send-arrow-btn:hover { transform: scale(1.15) translateX(2px); }
+
+        .attachment-circle-file-btn {
+            width: 54px; height: 54px; background-color: #fffee4;
+            border: 1.5px solid rgba(187, 137, 245, 0.5); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 16px; color: #43006B; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(67, 0, 107, 0.06); transition: transform 0.2s ease;
+        }
+
+                /* ======================================================== */
+        /*  GAYA KOSMETIK NOTIFIKASI DARURAT RUJUKAN SESUAI FIGMAMU */
+        /* ======================================================== */
+        .fuyu-emergency-professional-box {
+            width: 100% !important;
+            background-color: #ffffff !important; /* Latar putih bersih sesuai gambarmu */
+            border-radius: 20px !important;
+            padding: 15px !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            box-shadow: 0 8px 20px rgba(67, 0, 107, 0.06) !important;
+            margin-top: 15px !important;
+            animation: mekarMood 0.4s ease-out forwards !important;
+            border: 1.5px solid rgba(67, 0, 107, 0.1) !important;
+        }
+
+             .emergency-title-text {
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            color: #002294 !important; /* Biru pekat sesuai gambarmu */
+            margin: 0 0 12px 0 !important;
+            
+            /* REVISI: Garis bawah dihapus bersih agar lebih rapi minimalis! */
+            text-decoration: none !important; 
+            
+            line-height: 1.4 !important;
+        }
+
+        /* Formasi barisan 3 tombol sejajar horizontal melintasi garis biru */
+        .emergency-buttons-row {
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            position: relative !important;
+            padding-top: 8px !important;
+        }
+
+        /* Garis horizontal biru pembatas di belakang tombol */
+        .emergency-buttons-row::before {
+            content: "" !important;
+            position: absolute !important;
+            top: 50% !important; left: 0 !important; right: 0 !important;
+            height: 2px !important;
+            background-color: #007bff !important; /* Garis biru pekat melintang */
+            z-index: 1 !important;
+            transform: translateY(-50%) !important;
+        }
+
+        .emergency-chip-btn {
+            background-color: #ffff99 !important; /* Kuning figma pastel kustom gambarmu */
+            border: none !important;
+            color: #43006B !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 5px 14px !important;
+            border-radius: 6px !important;
+            cursor: pointer !important;
+            z-index: 5 !important; /* Duduk di atas garis biru agar kelihatan rapi */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+            transition: transform 0.1s ease !important;
+        }
+        .emergency-chip-btn:hover {
+            transform: scale(1.08) !important;
+            background-color: #ffffff !important;
+            outline: 1.5px solid #43006B !important;
+        }
+
+              /* ======================================================== */
+        /*  REVISI STERIL: OVERLAY TRANSISI HANYA PICU PAS DIKLIK    */
+        /* ======================================================== */
+        .fuyu-modal-transisi-overlay {
+            position: absolute !important;
+            top: 0 !important; left: 0 !important;
+            width: 100% !important; height: 100% !important;
+            
+            /* Membuat latar belakang chatan di belakangnya otomatis nge-blur halus kristal */
+            background: rgba(67, 0, 107, 0.25) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            
+            /* REVISI KUNCI: Perintah display: flex !important; DIHAPUS BERSIH dari sini */
+            /* Agar dia patuh mengikuti perintah display: none bawaan HTML saat halaman baru mekar */
+            
+            justify-content: center !important;
+            align-items: flex-end !important; /* Mengunci posisi mencuat di area bawah layar */
+            padding-bottom: 50px !important;
+            box-sizing: border-box !important;
+            z-index: 999999 !important;
+        }
+
+        .fuyu-transisi-box {
+            width: 85% !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 2px solid #43006B !important;
+            border-radius: 24px !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
+            text-align: left !important;
+            box-shadow: 0 15px 35px rgba(67, 0, 107, 0.15) !important;
+            animation: slideUpNotif 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+        }
+
+        @keyframes slideUpNotif {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .transisi-header h4 {
+            margin: 0 !important; font-family: 'Poppins', sans-serif !important;
+            font-size: 15px !important; font-weight: 700 !important; color: #43006B !important;
+        }
+        .transisi-header p {
+            margin: 2px 0 14px 0 !important; font-family: 'Poppins', sans-serif !important;
+            font-size: 11px !important; font-weight: 500; color: #757575 !important;
+        }
+
+        /* TRACK JALUR PROGRESS BAR */
+        .fuyu-progress-bar-track {
+            width: 100% !important; height: 26px !important;
+            background-color: #212121 !important; /* Latar hitam gelap pakem sesuai kotakan luar gambarmu */
+            border: 1.5px solid #ffffff !important;
+            border-radius: 4px !important;
+            padding: 2px !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        /* ISI PROGRESS BAR WARNA BIRU BERGERAK MAJU */
+        .fuyu-progress-bar-fill-blue {
+            height: 100% !important;
+            width: 0% !important;
+            background-color: #007bff !important; /* Warna biru pekat solid persis gambarmu */
+            border-radius: 2px !important;
+            animation: jalanMajuBiru 1.4s ease-in-out forwards !important;
+        }
+
+        @keyframes jalanMajuBiru {
+            0% { width: 0%; }
+            30% { width: 40%; }
+            70% { width: 75%; }
+            100% { width: 100%; }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- HEADER TOP BAR PROFILE CHAT KONSULTAN -->
+        <div class="chat-header-bar">
+            <a href="chat.html" class="back-to-room-btn">◀</a>
+            <div class="avatar-circle-profile">
+                <img src="health1.png" alt="AI Consultant Avatar">
+            </div>
+            <div class="header-chat-info">
+                <h4>Fuyu Medical Consultant</h4>
+                <p>● Active Now</p>
+            </div>
+        </div>
+
+        <!-- AREA RUANG GELEMBUNG CHAT (FIX SINKRON FIGMA FUYU) -->
+        <div class="chat-messages-body-zone">
+            
+            <!-- POP-UP MENU UTAMA: CHIPS EMOSI KEMBAR SEPERTI GAMBAR -->
+            <div id="wadahOpsiEmosiAwal" class="fuyu-figma-mood-box">
+                <div class="mood-box-header">
+                    <h4>Hi, user!</h4>
+                    <p>Gimana mood kamu hari ini?</p>
+                </div>
+                <div class="mood-box-buttons-grid">
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Senang', 'Happy')">Senang</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Kesel', 'Angry')">Kesel</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Sedih', 'Sad')">Sedih</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Terharu', 'Touched')">Terharu</button>
+                                    </div>
+            </div>
+
+        </div> <!-- Penutup chat-messages-body-zone -->
+
+        <div class="chat-bottom-input-bar-container">
+            <div class="typing-capsule-input-box">
+                <input type="text" placeholder="Typing text..." id="inputObrolanMentah">
+                <button class="send-arrow-btn">➢</button>
+            </div>
+            <div class="attachment-circle-file-btn">📄</div>
+        </div>
+
+                <!-- ======================================================== -->
+        <!-- PREMIUM MODAL: POP-UP IN-APP TRANSISI BARU KE CHAT GENERAL -->
+        <!-- ======================================================== -->
+        <div id="popupPeralihanKamarGlosser" class="fuyu-modal-transisi-overlay" style="display: none;">
+            <div class="fuyu-transisi-box">
+                <div class="transisi-header">
+                    <h4>Loading ....</h4>
+                    <p>Mengalihkan Anda ke Kamar AI Partner Curhat...</p>
+                </div>
+                <!-- PROGRESS BAR BIRU ANIMATIF PERSIS GAMBAR CONTOHMU -->
+                <div class="fuyu-progress-bar-track">
+                    <div class="fuyu-progress-bar-fill-blue"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div> <!-- Penutup phone-screen -->
+
+     <!-- LOGIKA SAKLAR KONSULTAN: PENGHITUNG 50 KATA, ENERGY BAR, & NOTIFIKASI REAL-TIME -->
+    <script>
+        var wadahScrollChat = document.querySelector('.chat-messages-body-zone');
+        var inputTeksMentah = document.getElementById('inputObrolanMentah');
+        var tombolPanahKirim = document.querySelector('.send-arrow-btn');
+
+        // MEMORI UTAMA BAR ENERGI USER (MAKSIMAL 10 CHAT PER HARI)
+        var sisaEnergiBarChat = 10; 
+
+        // DATABASE KELUHAN KLINIS FUYU MEDICAL CONSULTANT
+        var bankJawabanFuyuMedical = {
+            "stres": "Stres kronis dapat meningkatkan hormon kortisol yang mengganggu ritme sirkadian tubuh. 🩺 Coba lakukan relaksasi pernapasan metode 4-7-8 sebelum tidur untuk menenangkan sistem saraf parasimpatis Anda.",
+            "tidur": "Pola tidur berantakan (insomnia) sangat berpengaruh pada imunitas fisik. Disarankan mematikan gadget 30 menit sebelum tidur, menjaga suhu kamar tetap sejuk, and menghindari konsumsi kafein.",
+            "pusing": "Sakit kepala atau pusing bisa dipicu kurangnya hidrasi atau kelelahan otot mata akibat paparan layar monitor. Silakan minum air putih hangat and istirahatkan mata sejenak dari radiasi cahaya.",
+            "halo": "Halo. Saya siap mengevaluasi keluhan kesehatan Anda secara medis. Silakan deskripsikan gejala, durasi, atau tekanan pola harian apa yang ingin Anda konsultasikan hari ini.",
+            "default": "Catatan medis klinis Anda telah saya terima di database triase Fuyu. Tetap pantau gejalanya secara berkala, prioritaskan hidrasi seimbang, and ceritakan keluhan Anda secara bertahap agar saya bisa memetakan penanganannya. 🩺🐾"
+        };
+
+        // FUNGSI UTAMA: MENANGKAP OPSI EMOSI PANEL AWAL
+        function pemicuKlikOpsiEmosiLive(namaEmosiTeks, statusEmosiKey) {
+            var wadahChips = document.getElementById('wadahOpsiEmosiAwal');
+            if (wadahChips) wadahChips.style.display = 'none';
+
+            var gelembungUser = document.createElement('div');
+            gelembungUser.className = 'msg-bubble-row user-side';
+            gelembungUser.innerHTML = `<div class="bubble-text">Hari ini aku lagi merasa ${namaEmosiTeks}...</div>`;
+            wadahScrollChat.appendChild(gelembungUser);
+            autoScrollKeBawahChat();
+
+            setTimeout(function() {
+                var balasanWelcomeAI = "";
+                if (statusEmosiKey === 'Happy') {
+                    balasanWelcomeAI = "Evaluasi klinis mencatat emosi positif (kebahagiaan) sangat bagus untuk memicu hormon endorfin dan menstabilkan imunitas tubuh Anda. 🩺 Silakan ceritakan momentum positif Anda hari ini.";
+                } else if (statusEmosiKey === 'Angry') {
+                    balasanWelcomeAI = "Rasa jengkel atau kesel dapat memicu lonjakan tekanan darah minor and membebani kerja jantung. 🩺 Silakan deskripsikan faktor utama apa yang memicu agresi emosi Anda agar kita bisa melakukan peredaman regulasi stres bersama.";
+                } else if (statusEmosiKey === 'Sad') {
+                    balasanWelcomeAI = "Keluhan penurunan mood (kesedihan mendalam) telah terekam di sistem triase medis. 🩺 Silakan ceritakan keluhan batin Anda secara perlahan agar saya bisa meng-adjust panduan terapi relaksasi yang akurat.";
+                } else if (statusEmosiKey === 'Touched') {
+                    balasanWelcomeAI = "Momen mengharukan secara psikologis terbukti ampuh merilekskan sistem saraf sirkadian Anda. 🩺 Silakan tuliskan kronologinya secara mendetail untuk pencatatan riwayat relaksasi batin.";
+                }
+
+                cetakBalasanFuyuAIKiri(balasanWelcomeAI, false);
+            }, 600);
+        }
+
+        // ENGINE CHAT LIVE USER VIA KAPSUL KUNING (DENGAN REM SAKLAR MAKSIMAL 50 KATA)
+        function kirimPesanUserLive() {
+            if (sisaEnergiBarChat <= 0) {
+                eksekusiKunciBlokirLayarPaksa();
+                return;
+            }
+
+            var teksKetik = inputTeksMentah.value.trim();
+            if (teksKetik === "") return;
+
+            // ========================================================
+            // SIKAT BIANG KEROK: HITUNG JUMLAH KATA (MAKSIMAL 50 KATA PER GELEMBUNG)
+            // ========================================================
+            var jumlahKataUser = teksKetik.split(/\s+/).filter(function(kata) { return kata.length > 0; }).length;
+            
+            if (jumlahKataUser > 50) {
+                alert("Meoww! Teks kepanjangan, Fuyu! 😿 Satu gelembung chat dibatasi maksimal 50 kata agar triase AI berjalan akurat (Ketikan Anda saat ini: " + jumlahKataUser + " kata). Yuk ringkas atau potong curhatanmu jadi beberapa bagian!");
+                return; // BLOKIR JALUR: Pesan gagal terkirim and kuota energi aman tidak terpotong!
+            }
+
+            // Jika lulus sensor 50 kata, kuota energi baru resmi dipotong 1
+            sisaEnergiBarChat--;
+
+            var gelembungUser = document.createElement('div');
+            gelembungUser.className = 'msg-bubble-row user-side';
+            gelembungUser.innerHTML = `<div class="bubble-text">${teksKetik}</div>`;
+            wadahScrollChat.appendChild(gelembungUser);
+
+            inputTeksMentah.value = "";
+            autoScrollKeBawahChat();
+
+            setTimeout(function() {
+                var teksKunciLow = teksKetik.toLowerCase();
+                var balasanFinalAI = "";
+                var picuStatusBahayaKritis = false;
+
+                // DETEKSI KATA KUNCI RANAH BAHAYA TINGKAT TINGGI
+                if (teksKunciLow.includes("bunuh diri") || teksKunciLow.includes("sakiti diri") || teksKunciLow.includes("depresi berat") || teksKunciLow.includes("trauma") || teksKunciLow.includes("pengen mati") || teksKunciLow.includes("gila") || teksKunciLow.includes("sayat")) {
+                    balasanFinalAI = "Sistem mendeteksi tekanan psikologis Anda berada di tingkat indikasi kritis. 🩺 Hubungan emosional and batin Anda sangat berharga. Mohon hentikan tindakan yang membahayakan keselamatan Anda.";
+                    picuStatusBahayaKritis = true; 
+                
+                // DETEKSI REKAMAN MEDIS BIASA
+                } else if (teksKunciLow.includes("stres") || teksKunciLow.includes("depresi") || teksKunciLow.includes("cemas") || teksKunciLow.includes("batin")) {
+                    balasanFinalAI = bankJawabanFuyuMedical["stres"];
+                } else if (teksKunciLow.includes("tidur") || teksKunciLow.includes("insomnia") || teksKunciLow.includes("begadang")) {
+                    balasanFinalAI = bankJawabanFuyuMedical["tidur"];
+                } else if (teksKunciLow.includes("pusing") || teksKunciLow.includes("sakit") || teksKunciLow.includes("demam") || teksKunciLow.includes("mual")) {
+                    balasanFinalAI = bankJawabanFuyuMedical["pusing"];
+                } else if (teksKunciLow.includes("crush") || teksKunciLow.includes("sw") || teksKunciLow.includes("doi") || teksKunciLow.includes("chat")) {
+                    balasanFinalAI = "Topik dinamika asmara terdeteksi. 🩺 Namun, sebagai Fuyu Medical Consultant, fokus utama saya adalah mengevaluasi keluhan klinis fisik dan tekanan psikis berat Anda. Jika hal ini memicu kecemasan emosional berlebih, mohon jabarkan gejalanya.";
+                } else if (teksKunciLow.includes("halo") || teksKunciLow.includes("selamat")) {
+                    balasanFinalAI = bankJawabanFuyuMedical["halo"];
+                } else if (teksKunciLow.length > 4 && !teksKunciLow.includes(" ") && !/[aeiou]/i.test(teksKunciLow)) {
+                    balasanFinalAI = "Format input tidak valid. 🩺 Mohon deskripsikan keluhan klinis secara jelas menggunakan kata-kata yang jelas agar sistem konsultan Fuyu dapat melakukan triase diagnosa secara akurat.";
+                } else {
+                    balasanFinalAI = bankJawabanFuyuMedical["default"];
+                }
+
+                // SUNTIKAN INTEGRASI BAR BARU: Masukkan teks notifikasi sisa energi di setiap akhir chat konsul!
+                if (!picuStatusBahayaKritis) {
+                    balasanFinalAI += `<br><br><small style="color: #ffff99; font-weight: 700; display: block; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 6px;">🩺 (Sisa Kuota Bar Energi Anda saat ini: ${sisaEnergiBarChat}/10 bar)</small>`;
+                }
+
+                cetakBalasanFuyuAIKiri(balasanFinalAI, picuStatusBahayaKritis);
+                
+                // Cek pasca pengiriman apakah bar energi habis total
+                setTimeout(function() {
+                    if (sisaEnergiBarChat <= 0 && !picuStatusBahayaKritis) {
+                        cetakBalasanFuyuAIKiri("Pemberitahuan Sistem: Sisa Bar Energi Anda hari ini telah habis total (0/10 bar). 🩺 Akses pengiriman pesan di Kamar Konsultan resmi dikunci. Mohon kembali besok atau beralih ke AI Partner biasa ya.", false);
+                        eksekusiKunciBlokirLayarPaksa();
+                    }
+                }, 800);
+
+            }, 600);
+        }
+
+        // ENGINE PENCETAK GELEMBUNG CHAT FUYU AI KIRI
+        function cetakBalasanFuyuAIKiri(teksBalasan, apakahKritis) {
+            var gelembungAI = document.createElement('div');
+            gelembungAI.className = 'msg-bubble-row ai-side';
+
+            var waktuSkrg = new Date();
+            var jamMenit = waktuSkrg.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+
+            var kontenDalamGelembung = `<div class="bubble-text">${teksBalasan}`;
+
+            if (apakahKritis === true) {
+                kontenDalamGelembung += `
+                    <!-- KOMPONEN POP-UP RUJUKAN PROFESIONAL -->
+                    <div class="fuyu-emergency-professional-box">
+                        <p class="emergency-title-text">Apakah kamu saat ini ingin dialihkan ke ahli/profesional?</p>
+                        <div class="emergency-buttons-row">
+                            <button class="emergency-chip-btn" onclick="eksekusiOpsiRujukanKritis('Iya')">Iya</button>
+                                                        <button class="emergency-chip-btn" onclick="eksekusiOpsiRujukanKritis('Belum')">Masih Belum</button>
+                            <button class="emergency-chip-btn" onclick="eksekusiOpsiRujukanKritis('Tidak')">Tidak</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            kontenDalamGelembung += `</div><span class="chat-time-stamp">${jamMenit}</span>`;
+            gelembungAI.innerHTML = kontenDalamGelembung;
+            wadahScrollChat.appendChild(gelembungAI);
+            autoScrollKeBawahChat();
+        }
+
+        // ========================================================
+        // 4. ENGINE RESPONS KLIK TOMBOL PILIHAN DARURAT
+        // ========================================================
+        function eksekusiOpsiRujukanKritis(opsiPilihan) {
+            var balasanAILanjutan = "";
+            var tampilkanTombolPeralihanCabang = false;
+
+            if (opsiPilihan === 'Iya') {
+                balasanAILanjutan = "Keputusan yang sangat bijaksana. 100% tepat. 🩺 Menghubungkan Anda ke layanan konseling profesional darurat real... Bantuan medis psikolog terpercaya akan segera mendampingi Anda via WhatsApp/Telepon medis. Stay safe! 🩺💞";
+                       } else if (opsiPilihan === 'Belum') {
+                // Tampilkan pesan empati singkat lalu munculkan overlay loading pindah ke Distracting Room
+                balasanAILanjutan = "Baik, saya mengerti. 🩺 Sebelum mengambil keputusan besar, mari kita salurkan tekanan emosimu ke tempat yang aman. Mengalihkan Anda ke <b>Distracting Room</b> untuk melepaskan beban pikiran... 🐱🔊";
+                
+                setTimeout(function() {
+                    var modalTransisi = document.getElementById('popupPeralihanKamarGlosser');
+                    if (modalTransisi) {
+                        modalTransisi.querySelector('p').innerText = "Membuka Distracting Room... Siapkan suaramu! 🐱🔊";
+                        modalTransisi.style.display = 'flex';
+                    }
+                    setTimeout(function() {
+                        window.location.href = 'distracting-room.html';
+                    }, 1800);
+                }, 1200);
+
+            } else if (opsiPilihan === 'Tidak') {
+                balasanAILanjutan = "Baik, laporan penolakan dicatat. 🩺 Anda tetap dapat melanjutkan chatan di sini, namun harap diperhatikan bahwa kuota Bar Energi Anda di ruang konsultan medis terbatas hanya sisa <b>" + sisaEnergiBarChat + "/10 bar</b> untuk hari ini.<br><br>Sangat disarankan agar Anda beralih chatan ke AI Partner biasa saja demi kenyamanan curhat harian jangka panjang tanpa batas kuota harian. Silakan pilih opsi tindakan Anda:";
+                tampilkanTombolPeralihanCabang = true; 
+            }
+
+            setTimeout(function() {
+                var gelembungLanjutan = document.createElement('div');
+                gelembungLanjutan.className = 'msg-bubble-row ai-side';
+                var waktuSkrg = new Date();
+                var jamMenit = waktuSkrg.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+
+                var strukturBalas = `<div class="bubble-text">${balasanAILanjutan}`;
+                
+                if (tampilkanTombolPeralihanCabang === true) {
+                    strukturBalas += `
+                        <div class="fuyu-emergency-professional-box" style="background-color: transparent; border: none; box-shadow: none; margin-top: 10px;">
+                            <div class="emergency-buttons-row" style="padding-top: 0;">
+                                <button class="emergency-chip-btn" style="background-color: #fffee4 !important; width: 45%; padding: 8px 5px;" onclick="eksekusiKeputusanCabangUser('tetap')">Tetap di Sini</button>
+                                <button class="emergency-chip-btn" style="background-color: #c9b3ff !important; width: 45%; padding: 8px 5px;" onclick="eksekusiKeputusanCabangUser('pindah')">Chat AI Biasa</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                strukturBalas += `</div><span class="chat-time-stamp">${jamMenit}</span>`;
+                gelembungLanjutan.innerHTML = strukturBalas;
+                wadahScrollChat.appendChild(gelembungLanjutan);
+                autoScrollKeBawahChat();
+
+                if (sisaEnergiBarChat <= 0 && opsiPilihan === 'Tidak') {
+                    setTimeout(function() {
+                        cetakBalasanFuyuAIKiri("Pemberitahuan Sistem: Sisa Bar Energi Anda resmi menyentuh angka 0/10 bar. Kolom pengetikan dinonaktifkan secara otomatis.", false);
+                        eksekusiKunciBlokirLayarPaksa();
+                    }, 1000);
+                }
+            }, 500);
+        }
+        // LOGIKA REVISI: ENGINE PENYULUT ANIMASI PROGRESS BAR BIRU IN-APP KE CHAT-AI
+        function eksekusiKeputusanCabangUser(opsiCabang) {
+            if (opsiCabang === 'tetap') {
+                if (sisaEnergiBarChat <= 0) {
+                    alert("Kuota Energi Anda sudah habis (0/10), tidak bisa melanjutkan sesi konsultasi paksa!");
+                    eksekusiKunciBlokirLayarPaksa();
+                    return;
+                }
+                cetakBalasanFuyuAIKiri("Akses dipertahankan. 🩺 Sesi Fuyu Medical Consultant tetap berjalan. Silakan ketik keluhan kelanjutan Anda selagi kuota Bar Energi Anda mencukupi.<br><br><small style='color: #ffff99; font-weight: 700;'>🩺 (Sisa Kuota Bar Energi Anda saat ini: " + sisaEnergiBarChat + "/10 bar)</small>", false);
+            } else if (opsiCabang === 'pindah') {
+                // Tarik komponen modal transisi barumu
+                var modalTransisi = document.getElementById('popupPeralihanKamarGlosser');
+                
+                if (modalTransisi) {
+                    // 1. Munculkan overlay blur and kotak progress bar biru di bagian bawah screen HP
+                    modalTransisi.style.display = 'flex';
+                    
+                    // 2. Berikan jeda 1.5 detik agar bar animasi biru terisi penuh 100%, baru ganti page!
+                    setTimeout(function() {
+                        modalTransisi.style.display = 'none';
+                        window.location.href = 'chat.ai.html'; // Meluncur lurus kembali ke chat biasa
+                    }, 1500);
+                } else {
+                    // Cadangan darurat jika elemen gagal ditarik
+                    window.location.href = 'chat.ai.html';
+                }
+            }
+        }
+
+        // FUNGSI UTAMA BLOKIR PAKSA SCREEN JIKA BAR HABIS NYATA 0
+        function eksekusiKunciBlokirLayarPaksa() {
+            inputTeksMentah.disabled = true; 
+            inputTeksMentah.placeholder = "Kuota Bar Energi Habis (0/10)...";
+            inputTeksMentah.style.backgroundColor = "#e0e0e0";
+            inputTeksMentah.style.color = "#9e9e9e";
+            inputTeksMentah.style.cursor = "not-allowed";
+            
+            tombolPanahKirim.disabled = true; 
+            tombolPanahKirim.style.opacity = "0.3";
+            tombolPanahKirim.style.cursor = "not-allowed";
+            tombolPanahKirim.onclick = null;
+        }
+
+        function autoScrollKeBawahChat() {
+            wadahScrollChat.scrollTop = wadahScrollChat.scrollHeight;
+        }
+
+        tombolPanahKirim.onclick = kirimPesanUserLive;
+        inputTeksMentah.onkeydown = function(e) {
+            if (e.key === "Enter") {
+                kirimPesanUserLive();
+            }
+        };
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Partner Chat - Fuyu Kesehatan</title>
+    
+    <!-- Memanggil Font Poppins dari Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================================== */
+        /*  GAYA KOSMETIK RUANG OBROLAN PREMIUM UNGU: chat-ai.html  */
+        /* ======================================================== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #43006B; 
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0;
+        }
+
+        .phone-screen {
+            width: 412px; height: 915px;
+            background-color: #e2d2ff; 
+            border-radius: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden; display: flex;
+            flex-direction: column; box-sizing: border-box;
+        }
+
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px 5px 30px; font-weight: 700; font-size: 14px; color: #43006B;
+            z-index: 10; position: relative;
+        }
+        .status-icons { display: flex; gap: 5px; font-size: 12px; }
+
+        /* HEADER CHAT BAR ATAS GLOSSY */
+        .chat-header-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1.5px solid rgba(187, 137, 245, 0.4);
+            padding: 12px 24px; display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 4px 20px rgba(67, 0, 107, 0.05); z-index: 5;
+            border-radius: 0 0 24px 24px;
+        }
+        .back-to-room-btn {
+            text-decoration: none; font-size: 20px; color: #43006B; font-weight: 700; cursor: pointer;
+        }
+        .avatar-circle-profile {
+            width: 44px; height: 44px; background: #ffffff;
+            border: 2px solid #b388ff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 10px rgba(67, 0, 107, 0.05);
+        }
+        .avatar-circle-profile img { width: 75%; height: 75%; object-fit: contain; }
+        .header-chat-info h4 { margin: 0; font-size: 14px; font-weight: 700; color: #43006B; }
+        .header-chat-info p { margin: 1px 0 0 0; font-size: 10px; color: #22c55e; font-weight: 600; }
+
+        /* AREA GELEMBUNG OBROLAN TENGAH */
+        .chat-messages-body-zone {
+            flex: 1; overflow-y: auto; padding: 24px 20px;
+            display: flex; flex-direction: column; gap: 16px;
+            box-sizing: border-box;
+        }
+        .chat-messages-body-zone::-webkit-scrollbar { display: none; }
+
+            /* ======================================================== */
+        /*  FIX PERFECT: MOOD BOX GLOSSY + BORDER TEGAS KHAS FUYU   */
+        /* ======================================================== */
+        .fuyu-figma-mood-box {
+            width: 100% !important;
+            
+            /* Warna ungu transparan kabut agar BG dasar menembus keluar */
+            background: rgba(249, 248, 250, 0.534) !important; 
+            
+            /* Efek kaca kabur premium anti-flat */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            
+            /* KUNCI REVISI: Mengubah border putih menjadi BORDER UNGU PEKAT TEGAS solid 2px */
+            border: 2px solid #43006B !important;
+            
+            border-radius: 32px !important; 
+            padding: 24px 15px !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            
+            /* Efek bayangan halus agar kotak mencuat melayang timbul */
+            box-shadow: 0 15px 35px rgba(67, 0, 107, 0.05) !important;
+            
+            margin-bottom: 25px !important;
+            animation: mekarMood 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+        }
+
+        @keyframes mekarMood {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .mood-box-header h4 {
+            margin: 0 !important; font-size: 16px !important; font-weight: 700 !important; color: #43006B !important;
+        }
+        .mood-box-header p {
+            margin: 2px 0 16px 0 !important; font-size: 14px !important; font-weight: 700 !important; color: #43006B !important;
+        }
+
+        .mood-box-buttons-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 12px 20px !important;
+            padding: 0 15px !important;
+        }
+
+        .mood-quick-chip {
+            background-color: #c9b3ff !important; 
+            border: none !important;
+            color: #43006B !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            padding: 10px 0 !important;
+            border-radius: 20px !important; 
+            cursor: pointer !important;
+            text-align: center !important;
+            transition: all 0.2s ease !important;
+        }
+        .mood-quick-chip:hover {
+            transform: scale(1.05) !important;
+            background-color: #ffffff !important;
+        }
+
+        /* GELEMBUNG CHAT KANAN (USER) */
+        .msg-bubble-row.user-side { align-self: flex-end; width: 75%; display: flex; justify-content: flex-end; }
+        .msg-bubble-row.user-side .bubble-text {
+            background-color: #c9b3ff; 
+            color: #43006B; font-size: 12.5px; font-weight: 500;
+            padding: 14px 18px; border-radius: 20px 20px 4px 20px; 
+            box-shadow: 0 6px 15px rgba(67, 0, 107, 0.04); text-align: left;
+        }
+
+        /* GELEMBUNG CHAT KIRI (AI INTERAKTIF) */
+        .msg-bubble-row.ai-side { align-self: flex-start; width: 85%; display: flex; flex-direction: column; gap: 4px; }
+        .msg-bubble-row.ai-side .bubble-text {
+            background-color: #8c76b8; 
+            color: #ffffff; font-size: 13px; font-weight: 500; line-height: 1.5;
+            padding: 16px 20px; border-radius: 4px 24px 24px 24px; 
+            box-shadow: 0 8px 25px rgba(67, 0, 107, 0.08); text-align: left;
+        }
+        .chat-time-stamp { font-size: 9px; color: #b388ff; font-weight: 500; margin-left: 6px; margin-top: 2px; }
+
+        /* FOOTER INPUT BAR BAWAH KAPSUL KUNING */
+        .chat-bottom-input-bar-container {
+            padding: 15px 20px 25px 20px; display: flex; align-items: center; gap: 10px;
+            background: linear-gradient(180deg, transparent, rgba(67, 0, 107, 0.05)); z-index: 5;
+        }
+        
+        .typing-capsule-input-box {
+            flex: 1; height: 54px; background-color: #fffee4; 
+            border: 1.5px solid rgba(187, 137, 245, 0.5); border-radius: 27px;
+            padding: 0 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 8px 20px rgba(67, 0, 107, 0.06);
+        }
+        .typing-capsule-input-box input {
+            width: 85%; background: none; border: none; outline: none;
+            font-family: 'Poppins', sans-serif; font-size: 13px; color: #43006B; font-weight: 500;
+        }
+        .typing-capsule-input-box input::placeholder { color: #b388ff; opacity: 0.7; }
+        
+        .send-arrow-btn {
+            background: none; border: none; font-size: 18px; color: #43006B; cursor: pointer;
+            transition: transform 0.2s ease; display: flex; align-items: center;
+        }
+        .send-arrow-btn:hover { transform: scale(1.15) translateX(2px); }
+
+        .attachment-circle-file-btn {
+            width: 54px; height: 54px; background-color: #fffee4;
+            border: 1.5px solid rgba(187, 137, 245, 0.5); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 16px; color: #43006B; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(67, 0, 107, 0.06); transition: transform 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        <!-- STATUS BAR JAM HP -->
+        <div class="status-bar">
+            <span class="time">12.00</span>
+            <div class="status-icons">📶 🪫</div>
+        </div>
+
+        <!-- HEADER TOP BAR PROFILE CHAT -->
+        <div class="chat-header-bar">
+            <a href="chat.html" class="back-to-room-btn">◀</a>
+            <div class="avatar-circle-profile">
+                <img src="kucing1.png" alt="AI Avatar">
+            </div>
+            <div class="header-chat-info">
+                <h4>Fuyu AI Character</h4>
+                <p>● Active Now</p>
+            </div>
+        </div>
+
+        <!-- AREA RUANG GELEMBUNG CHAT (FIX SINKRON FIGMA FUYU) -->
+        <div class="chat-messages-body-zone">
+            
+            <!-- POP-UP MENU UTAMA: KEMBAR DENGAN FOTO CONTOH KEDUA KAMU -->
+            <div id="wadahOpsiEmosiAwal" class="fuyu-figma-mood-box">
+                <div class="mood-box-header">
+                    <h4>Hi, user!</h4>
+                    <p>Gimana mood kamu hari ini?</p>
+                </div>
+                <div class="mood-box-buttons-grid">
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Senang', 'Happy')">Senang</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Kesel', 'Angry')">Kesel</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Sedih', 'Sad')">Sedih</button>
+                    <button class="mood-quick-chip" onclick="pemicuKlikOpsiEmosiLive('Terharu', 'Touched')">Terharu</button>
+                </div>
+            </div>
+
+        </div> <!-- Penutup chat-messages-body-zone -->
+
+        <div class="chat-bottom-input-bar-container">
+            <div class="typing-capsule-input-box">
+                <input type="text" placeholder="Typing text..." id="inputObrolanMentah">
+                <button class="send-arrow-btn">➢</button>
+            </div>
+            <div class="attachment-circle-file-btn">📄</div>
+        </div>
+
+    </div> <!-- Penutup phone-screen -->
+
+    <script>
+        var wadahScrollChat = document.querySelector('.chat-messages-body-zone');
+                var inputTeksMentah = document.getElementById('inputObrolanMentah');
+        var tombolPanahKirim = document.querySelector('.send-arrow-btn');
+
+        // DATABASE BANK JAWABAN LOCAL CURHAT & ASMARA GENERAL
+        var bankJawabanFuyuPartner = {
+            "hobi": "Meoww! Hobi aku itu nemenin kamu koding sambil guling-guling gemas! 🐱 Kalo hobi kamu sendiri apa nih? Cerita dong!",
+            "makan": "Fuyu udah makan ikan tongkol tadi lezat banget! 🐟 Kamu jangan lupa makan tepat waktu ya, kesehatanmu itu nomor satu buat aku!",
+            "halo": "Halo juga sahabat terbaikku! 🐾 Senang banget denger ketukan jarimu lagi di kapsul chat ini. Ada cerita seru apa hari ini?",
+            "default": "Meoww! Aku dengerin kok cerita kamu, seru banget! 🐱💜 Coba ceritain lebih banyak lagi atau bahas topik lain, aku siap dengerin curhatanmu sampai plong!"
+        };
+
+        // ========================================================
+        // LOGIKA REVISI SAKLAR: MENYAMBUT USER SESUAI EMOSI PILIHAN
+        // ========================================================
+        function pemicuKlikOpsiEmosiLive(namaEmosiTeks, statusEmosiKey) {
+            var wadahChips = document.getElementById('wadahOpsiEmosiAwal');
+            if (wadahChips) wadahChips.style.display = 'none';
+
+            var gelembungUser = document.createElement('div');
+            gelembungUser.className = 'msg-bubble-row user-side';
+            gelembungUser.innerHTML = `<div class="bubble-text">Hari ini aku lagi merasa ${namaEmosiTeks}...</div>`;
+            wadahScrollChat.appendChild(gelembungUser);
+            autoScrollKeBawahChat();
+
+            setTimeout(function() {
+                var balasanWelcomeAI = "";
+
+                if (statusEmosiKey === 'Happy') {
+                    balasanWelcomeAI = "WAHH hufftt iyakahh?! 😍 Meoww seru bangettt!! Fuyu ikutan excited denger ceritamu! 🎉 Wah kamu lagi ada berita seneng apa niii, kalau mau ceritakan boleh yaaa, aku siap dengerin curhatan bahagiamu sepuasnya! 🐾✨";
+                } else if (statusEmosiKey === 'Angry') {
+                    balasanWelcomeAI = "Waduh meoww?! 😤 Lagi kesel kenapa niii? Siapa yang bikin manusia favorit Fuyu marah-marah hari ini?! Ceritain aja semuanya ke aku biar kekesalanmu tumpah habis dan plong yaaa! 🐾🔥";
+                } else if (statusEmosiKey === 'Sad') {
+                    balasanWelcomeAI = "Meoww... Pukpuk online buat kamu... 🥺 Purr... Lagi sedih kenapa niii? Sini bersandar di bulu hangat Fuyu, kalau mau ceritakan boleh banget yaaa, aku siap nemenin dan dengerin keluh kesahmu sampai tenang. 💕";
+                } else if (statusEmosiKey === 'Touched') {
+                    balasanWelcomeAI = "Meoww... Kok bisa sampai terharu gitu niii? 🥺😭 Fuyu jadi ikut penasaran batin, ada kejadian manis apa hari ini? Kalau mau ceritakan boleh yaaa, aku dengerin pelan-pelan!";
+                }
+
+                var gelembungAI = document.createElement('div');
+                gelembungAI.className = 'msg-bubble-row ai-side';
+
+                var waktuSkrg = new Date();
+                var jamMenit = waktuSkrg.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+
+                gelembungAI.innerHTML = `<div class="bubble-text">${balasanWelcomeAI}</div> <span class="chat-time-stamp">${jamMenit}</span>`;
+                wadahScrollChat.appendChild(gelembungAI);
+                autoScrollKeBawahChat();
+            }, 600);
+        }
+
+        // ENGINE PENGIRIMAN PESAN LIVE USER MANUAL (KAPSUL KUNING)
+        function kirimPesanUserLive() {
+            var teksKetik = inputTeksMentah.value.trim();
+            if (teksKetik === "") return;
+
+            var gelembungUser = document.createElement('div');
+            gelembungUser.className = 'msg-bubble-row user-side';
+            gelembungUser.innerHTML = `<div class="bubble-text">${teksKetik}</div>`;
+            wadahScrollChat.appendChild(gelembungUser);
+
+            inputTeksMentah.value = "";
+            autoScrollKeBawahChat();
+
+            setTimeout(function() {
+                var teksKunciLow = teksKetik.toLowerCase();
+                var balasanFinalAI = "";
+
+                // --- 1. SARINGAN UTAMA: DETEKSI MOOD KESEL / CUEK / NGAMUK (URUTAN PERTAMA!) ---
+                if (teksKunciLow.includes("ga bales") || teksKunciLow.includes("mengabaikan") || teksKunciLow.includes("cuek") || teksKunciLow.includes("kesel") || teksKunciLow.includes("marah") || teksKunciLow.includes("diabaikan")) {
+                    balasanFinalAI = "Waduh meoww?! 😤 Kok jahat banget sih nyuekin and mengabaikan chat kamu?! 💔 Siapa yang berani bikin manusia favorit Fuyu kesel hari ini?! Ceritain ke aku sini, kita omelin bareng-bareng biar batinmu plong! 🐾🔥";
+                
+                // --- 2. SARINGAN KEDUA: DETEKSI MOOD SEDIH / CAPEK ---
+                } else if (teksKunciLow.includes("sedih") || teksKunciLow.includes("capek") || teksKunciLow.includes("lelah") || teksKunciLow.includes("nangis") || teksKunciLow.includes("huft") || teksKunciLow.includes("pusing")) {
+                    balasanFinalAI = "Meoww... Pukpuk online buat kamu... 🥺 Purr... Jangan sedih yaaa manusia favoritku. Sini bersandar di bulu hangat Fuyu, ceritain pelan-perlahan apa yang bikin kamu sedih hari ini, aku selalu ada di sampingmu kok. 💕";
+                
+                // --- 3. SARINGAN KETIGA: DETEKSI BERITA SENANG & GOSIP ASMARA EXCITED ---
+                } else if (teksKunciLow.includes("wah") || teksKunciLow.includes("seru") || teksKunciLow.includes("senang") || teksKunciLow.includes("happy") || teksKunciLow.includes("notice") || teksKunciLow.includes("close friend") || teksKunciLow.includes("sw") || teksKunciLow.includes("sg") || teksKunciLow.includes("doi") || teksKunciLow.includes("iyakah")) {
+                    balasanFinalAI = "WAHH hufftt iyakahh?! 😍 Meoww seru bangettt!! Fuyu ikutan excited denger gosip ceritamu! 🎉 Berarti kamu dapet tempat spesial nih di hatinya! Katakan lagi dong interracial ceritanya, aku siap dengerin sambil lompat gemas! 🐾✨";
+                
+                // --- 4. DATA KATA KUNCI STRUKTUR DATA REGISTER ---
+                } else if (teksKunciLow.includes("hobi")) {
+                    balasanFinalAI = bankJawabanFuyuPartner["hobi"];
+                } else if (teksKunciLow.includes("makan")) {
+                    balasanFinalAI = bankJawabanFuyuPartner["makan"];
+                } else if (teksKunciLow.includes("halo") || teksKunciLow.includes("hi")) {
+                    balasanFinalAI = bankJawabanFuyuPartner["halo"];
+                } else if (teksKunciLow.length > 4 && !teksKunciLow.includes(" ") && !/[aeiou]/i.test(teksKunciLow)) {
+                    balasanFinalAI = "Meoww? 🧐 Waduh, kamu ketik bahasa planet apa tuh kaku banget? Fuyu bingung membacanya, yuk ketik curhatan asli kamu!";
+                } else {
+                    balasanFinalAI = bankJawabanFuyuPartner["default"];
+                }
+
+                var gelembungAI = document.createElement('div');
+                gelembungAI.className = 'msg-bubble-row ai-side';
+
+                var waktuSkrg = new Date();
+                var jamMenit = waktuSkrg.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+
+                gelembungAI.innerHTML = `<div class="bubble-text">${balasanFinalAI}</div> <span class="chat-time-stamp">${jamMenit}</span>`;
+                wadahScrollChat.appendChild(gelembungAI);
+                autoScrollKeBawahChat();
+            }, 600);
+        }
+
+        function autoScrollKeBawahChat() {
+            wadahScrollChat.scrollTop = wadahScrollChat.scrollHeight;
+        }
+
+        tombolPanahKirim.onclick = kirimPesanUserLive;
+        inputTeksMentah.onkeydown = function(e) {
+            if (e.key === "Enter") {
+                kirimPesanUserLive();
+            }
+        };
+    </script>
+</body>
+</html>
+

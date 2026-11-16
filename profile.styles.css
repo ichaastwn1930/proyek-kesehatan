@@ -1,0 +1,363 @@
+/* ======================================================== */
+/*  PAKET BARU FINAL UTUH BERSIH DI FILE PROFILE-STYLE.CSS  */
+/* ======================================================== */
+
+/* --- 1. SETTING DASAR HP EMULATOR --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #43006B; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.phone-screen {
+    width: 412px;
+    height: 915px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    position: relative; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* --- 2. DEKORASI AWAN KANAN ATAS --- */
+.awan-top-profile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.9;
+}
+.flip-kanan {
+    transform: scaleX(-1) !important;
+}
+
+/* --- 3. BAR NOTIFIKASI JAM HP --- */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px 5px 30px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+    z-index: 3;
+    position: relative;
+}
+.status-icons { display: flex; gap: 5px; font-size: 12px; }
+
+/* --- 4. TOP NAVIGATION HEADER --- */
+.top-nav-profile {
+    display: flex;
+    align-items: center;
+    padding: 15px 24px;
+    position: relative;
+    z-index: 3;
+    margin-top: 15px;
+}
+.back-btn-link { text-decoration: none; font-size: 24px; cursor: pointer; color: #43006B; }
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #43006B;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    padding-right: 30px;
+}
+
+/* --- 5. AREA SCROLLING KONTEN TENGAH --- */
+.profile-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 24px 30px 24px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+.profile-scroll-content::-webkit-scrollbar { display: none; }
+
+/* --- 6. DEKORASI KARTU PROFIL UTAMA FIGMA --- */
+.profile-main-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 24px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(67, 0, 107, 0.06);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(235, 215, 255, 0.5);
+}
+
+.avatar-frame-menu {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(67, 0, 107, 0.12);
+    margin-bottom: 12px;
+}
+.avatar-frame-menu img { width: 100%; height: 100%; object-fit: cover; }
+
+.user-title-name { font-size: 16px; font-weight: 700; color: #43006B; margin: 0 0 2px 0; }
+.user-sub-email { font-size: 12px; font-weight: 600; color: #b388ff; text-decoration: underline; margin: 0 0 15px 0; }
+
+.btn-trigger-edit {
+    background-color: #fffee4; /* Kuning pastel figma */
+    color: #43006B;
+    border: none;
+    padding: 8px 24px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(67, 0, 107, 0.05);
+    transition: transform 0.15s ease;
+}
+.btn-trigger-edit:hover { transform: scale(1.03); }
+
+/* --- 7. DEKORASI LIST MENU PILIHAN SETTING --- */
+.setting-menu-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.setting-item-box {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(67, 0, 107, 0.04);
+    border: 1px solid rgba(235, 215, 255, 0.3);
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #43006B;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.setting-item-box:hover {
+    transform: translateX(4px);
+    background: rgba(235, 215, 255, 0.1);
+}
+
+.version-text { font-size: 8px; font-weight: 700; color: #b388ff; margin-top: 5px; text-align: center; }
+
+/* --- 8. JENDELA POP-UP MENU OPSI INTERAKTIF DARI BAWAAH LAYAR --- */
+.setting-popup-overlay {
+    display: none; /* Tersembunyi default */
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Gelap transparan tipis */
+    z-index: 9999;
+    justify-content: center;
+    align-items: flex-end; /* Memaksa pop-up nongol menempel dari bawah HP */
+}
+
+.setting-popup-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    width: 100%;
+    border-radius: 30px 30px 0 0; /* Melengkung mewah di bagian atas saja */
+    padding: 15px 24px 30px 24px;
+    box-sizing: border-box;
+    box-shadow: 0 -10px 30px rgba(67, 0, 107, 0.1);
+    animation: slideUpFade 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Garis strip kecil khas aplikasi mobile di atas judul pop-up */
+.notch-indicator {
+    width: 40px; height: 4px; background: #e0e0e0; border-radius: 2px; margin: 0 auto 15px auto;
+}
+
+.setting-popup-content h3 {
+    margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: #43006B; text-align: center;
+}
+
+.popup-options-vertical { display: flex; flex-direction: column; gap: 8px; }
+
+/* Tombol Pilihan Opsi Di Dalam Pop-up */
+.opt-select-btn {
+    width: 100%; background: #ffffff; border: 1px solid rgba(235, 215, 255, 0.4);
+    padding: 12px; border-radius: 14px; font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 600; color: #43006B; cursor: pointer;
+    transition: background 0.15s ease;
+}
+.opt-select-btn:hover { background: rgba(67, 0, 107, 0.05); }
+
+@keyframes slideUpFade {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+/* --- 9. DEKORASI ZONE SOSIAL MEDIA (IKUTI KAMI) --- */
+.social-follow-container {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 25px !important;
+    margin-bottom: 20px !important;
+    box-sizing: border-box;
+}
+
+.follow-us-title {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #b388ff !important; /* Ungu soft manis */
+    margin: 0 0 10px 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.social-icons-row {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 18px !important; /* Jarak renggang antar ikon bulat medsos */
+}
+
+/* ======================================================== */
+/*  PERBAIKAN: BINGKAI LINGKARAN (BORDER) UNTUK IKON SOSMED */
+/* ======================================================== */
+
+.social-icons-row {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 16px !important; /* Jarak renggang antar tombol medsos */
+}
+
+/* SIHIR UTAMA: MEMBUAT BINGKAI BULAT GLOSSY UNTUK LOGO SOSMED */
+.social-link-item {
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Setelan ukuran bingkai lingkaran luar */
+    width: 42px !important; 
+    height: 42px !important;
+    
+    /* Efek Kaca Transparan Lembut Berkabut khas Figma kamu */
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    
+    /* Membuat bingkai menjadi bulat sempurna */
+    border-radius: 50% !important; 
+    
+    /* Garis pembatas (border) kuning figma tipis yang sangat manis */
+    border: 1.5px solid #fff59d !important; 
+    
+    /* Bayangan tipis agar tombolnya terlihat sedikit menonjol melayang */
+    box-shadow: 0 4px 10px rgba(67, 0, 107, 0.04) !important;
+    
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* Efek Interaktif: Lingkaran sedikit membesar membal saat disentuh */
+.social-link-item:hover {
+    transform: scale(1.12) !important;
+    background: #fffee4 !important; /* Berubah jadi kuning pastel figma saat disentuh jari/mouse */
+    box-shadow: 0 6px 15px rgba(67, 0, 107, 0.08) !important;
+}
+
+/* Mengunci ukuran gambar logo di dalam lingkaran agar presisi di tengah */
+.social-link-item img {
+    width: 20px !important; 
+    height: 20px !important;
+    object-fit: contain !important;
+}
+
+
+/* --- 10. TOMBOL LOGOUT UTAMA KUNING PASTEL DI PROFILE MENU --- */
+.profile-logout-box {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 2px !important;
+    margin-bottom: 20px !important;
+}
+
+.btn-logout-main {
+    background-color: #fffee4 !important; /* Kuning pastel khas figma kamu */
+    color: #43006B !important;
+    border: none !important;
+    padding: 12px 45px !important; /* Lebih melebar mewah proporsional */
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    border-radius: 16px !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 15px rgba(67, 0, 107, 0.06) !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-logout-main:hover {
+    transform: scale(1.03) !important;
+    box-shadow: 0 8px 20px rgba(67, 0, 107, 0.1) !important;
+}
+/* ======================================================== */
+/*  CSS UPDATE: TOMBOL SOSMED IG & X MINIMALIS ANTI-MELUBER  */
+/* ======================================================== */
+
+.fuyu-follow-us-section {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 20px !important;
+}
+
+.fuyu-follow-us-section h3 {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #b388ff !important; /* Warna ungu pastel kawai kesukaanmu */
+    margin-bottom: 14px !important;
+}
+
+.social-media-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important; /* Jarak renggang ideal antar tombol lingkaran */
+}
+
+/* Mempertahankan lingkaran kuning tipis estetik sesuai gambarmu */
+.social-circle-btn {
+    width: 54px !important;
+    height: 54px !important;
+    background-color: #ffffff !important;
+    border: 2px solid #fff59d !important; /* Bingkai kuning figma lembut */
+    border-radius: 50% !important; /* Berbentuk bulat sempurna */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-shadow: 0 4px 10px rgba(67, 0, 107, 0.02) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    text-decoration: none !important;
+}
+
+.social-circle-btn:hover {
+    transform: scale(1.1) !important; /* Efek membesar sedikit saat disentuh mouse/jari */
+    box-shadow: 0 6px 15px rgba(187, 137, 245, 0.15) !important;
+}
+
+/* Mengunci ukuran logo .png di dalam lingkaran agar pas dan tidak meluber keluar */
+.img-social-fuyu {
+    width: 55% !important;  /* Ukuran logo diatur proporsional di tengah bulatan */
+    height: 55% !important;
+    object-fit: contain !important;
+}
